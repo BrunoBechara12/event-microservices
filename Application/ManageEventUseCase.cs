@@ -1,0 +1,13 @@
+﻿using Application.UseCases;
+using Domain.Ports.In;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Application;
+public static class ManageEventUseCase
+{
+    public static IServiceCollection AddEventUseCase (this IServiceCollection services)
+    {
+        services.AddScoped<IEventUseCase, EventUseCase>();
+        return services;
+    }
+}
