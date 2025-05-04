@@ -1,4 +1,6 @@
-﻿using Infra.Data.Context;
+﻿using Domain.Ports.Output;
+using Infra.Data.Context;
+using Infra.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +14,7 @@ public static class ServiceInfraDataExtensions
 
         services.AddDbContext<EventDbContext>(options =>
             options.UseSqlServer(connectionString));
-
+        services.AddScoped<IEventRepository, EventRepository>();
         return services;
     }
 }
