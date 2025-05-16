@@ -1,9 +1,8 @@
 ﻿using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace API.Controllers;
-[Route("api/event")]
+[Route("api/events")]
 [ApiController]
 public class EventController : ControllerBase
 {
@@ -15,9 +14,47 @@ public class EventController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetEvents()
+    public async Task<IActionResult> Get()
     {
-        var events = await _eventUseCase.GetAllAsync();
-        return Ok(events);
+        var events = await _eventUseCase.GetAll();
+
+        if(events.RequestSuccess == true)
+            return Ok(new
+            {
+                message = events.Message,
+                data = events.Value
+            });
+
+        return BadRequest(new { message = events.Message });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var eventItem = await _eventUseCase.GetById(id);
+
+        if (eventItem.RequestSuccess == true)
+            return Ok(new
+            {
+                message = eventItem.Message,
+                data = eventItem.Value
+            });
+
+        return BadRequest(new { message = eventItem.Message });
+    }
+
+    [HttpGet("~/api/users/{userId}/events")]
+    public async Task<IActionResult> GetByUserId(int userId)
+    {
+        var events = await _eventUseCase.GetByUserId(userId);
+
+        if (events.RequestSuccess == true)
+            return Ok(new
+            {
+                message = events.Message,
+                data = events.Value
+            });
+
+        return BadRequest(new { message = events.Message });
     }
 }
