@@ -2,6 +2,7 @@
 using Domain.Ports.Output;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using static Domain.Entities.Collaborator;
 
 namespace Infra.Data.Repositories;
 public class EventRepository : IEventRepository
@@ -15,6 +16,57 @@ public class EventRepository : IEventRepository
 
     public async Task<IEnumerable<Event>> GetAll()
     {
-        return await _context.Events.ToListAsync();
+        var eventList = await _context.Events.ToListAsync();
+
+        return eventList;
+    }
+
+    public async Task<Event> GetById(int id)
+    {
+        var eventList = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
+
+        return eventList;
+    }
+    
+    public async Task<IEnumerable<Event>> GetByUserId(int userId)
+    {
+        var eventList = await _context.Events.Where(x => x.OwnerUserId == userId).ToListAsync();
+
+        return eventList;
+    }
+
+    public Task<Event> Create(Event createEvent)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Update(Event updateEvent)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<Collaborator>> GetCollaborators(int eventId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task AddCollaborator(int eventId, int userId, CollaboratorRole role)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateCollaboratorRole(int eventId, int userId, CollaboratorRole role)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task RemoveCollaborator(int eventId, int userId)
+    {
+        throw new NotImplementedException();
     }
 }
