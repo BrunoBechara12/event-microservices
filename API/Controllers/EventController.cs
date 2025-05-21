@@ -1,4 +1,6 @@
-﻿using Domain.Ports.In;
+﻿using Application.Dto;
+using Application.Mappers;
+using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -56,5 +58,26 @@ public class EventController : ControllerBase
             });
 
         return BadRequest(new { message = events.Message });
+    }
+
+    [HttpPost()]
+    public async Task<IActionResult> Create(CreateEventDto createEvent)
+    {
+        var domainEvent = CreateEventMapper.ToDomain(createEvent);
+
+        var eventItem = await _eventUseCase.Create(domainEvent);
+
+        if (eventItem.RequestSuccess == true)
+        {
+            var returnEventCreated = ReturnEventCreatedMapper.ToDto(eventItem.Value);
+
+            return Ok(new
+            {
+                message = eventItem.Message,
+                data = returnEventCreated
+            });
+        }
+           
+        return BadRequest(new { message = eventItem.Message });
     }
 }

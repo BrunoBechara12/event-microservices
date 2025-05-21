@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Dto;
+using Domain.Entities;
 using Domain.Ports.In;
 using Domain.Ports.Output;
 using t;
@@ -69,9 +70,18 @@ public class EventUseCase : IEventUseCase
         }
     }
 
-    public Task<Result<Event>> Create(Event createEvent)
+    public async Task<Result<Event>> Create(Event createEvent)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var createdEvent = await _eventRepository.Create(createEvent);
+
+            return Result<Event>.Success(createdEvent, "Event created with success!");
+        } 
+        catch(Exception ex)
+        {
+            return Result<Event>.Failure(ex.Message);
+        }
     }
 
     public Task Update(Event updateEvent)

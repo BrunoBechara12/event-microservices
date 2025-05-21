@@ -35,9 +35,12 @@ public class EventRepository : IEventRepository
         return eventList;
     }
 
-    public Task<Event> Create(Event createEvent)
+    public async Task<Event> Create(Event createEvent)
     {
-        throw new NotImplementedException();
+        var eventItem = _context.Events.AddAsync(createEvent);
+        await _context.SaveChangesAsync();
+
+        return eventItem.Result.Entity;
     }
 
     public Task Update(Event updateEvent)
