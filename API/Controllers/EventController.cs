@@ -20,7 +20,7 @@ public class EventController : ControllerBase
     {
         var events = await _eventUseCase.GetAll();
 
-        if(events.RequestSuccess == true)
+        if (events.RequestSuccess == true)
             return Ok(new
             {
                 message = events.Message,
@@ -77,7 +77,30 @@ public class EventController : ControllerBase
                 data = returnEventCreated
             });
         }
-           
+
         return BadRequest(new { message = eventItem.Message });
     }
+
+    [HttpPut("update")]
+    public async Task<IActionResult> Update(UpdateEventDto updateEvent)
+    {
+        var domainEvent = UpdateEventMapper.ToDomain(updateEvent);
+
+        var eventItem = await _eventUseCase.Update(domainEvent);
+
+        if (eventItem.RequestSuccess == true)
+        {
+            var returnEventUpdated = ReturnEventUpdatedMapper.ToDto(eventItem.Value);
+
+            return Ok(new
+            {
+                message = eventItem.Message,
+                data = returnEventUpdated
+            });
+        }
+
+        return BadRequest(new { message = eventItem.Message });
+    }
+
+
 }

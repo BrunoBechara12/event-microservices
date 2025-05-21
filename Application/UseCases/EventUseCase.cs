@@ -84,9 +84,23 @@ public class EventUseCase : IEventUseCase
         }
     }
 
-    public Task Update(Event updateEvent)
+    public async Task<Result<Event>> Update(Event updateEvent)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var updatedEvent = await _eventRepository.Update(updateEvent);
+
+            if (updatedEvent == null)
+            {
+                return Result<Event>.Failure("Event not found.");
+            }
+
+            return Result<Event>.Success(updatedEvent, "Event updated with success!");
+        } 
+        catch (Exception ex)
+        {
+            return Result<Event>.Failure(ex.Message);
+        }
     }
 
     public Task Delete (int id)

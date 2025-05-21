@@ -8,7 +8,7 @@ public interface IEventUseCase
     Task<Result<Event>> GetById(int id);
     Task<Result<IEnumerable<Event>>> GetByUserId(int userId);
     Task<Result<Event>> Create(Event createEvent);
-    Task Update(Event updateEvent);
+    Task<Result<Event>> Update(Event updateEvent);
     Task Delete(int id);
     Task<Result<IEnumerable<Event>>> GetCollaborators(int userId);
     Task AddCollaborator(int eventId, int userId);
