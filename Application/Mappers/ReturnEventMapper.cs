@@ -3,11 +3,11 @@ using Application.Dto;
 using Domain.Entities;
 
 namespace Application.Mappers;
-public class ReturnEventUpdatedMapper
+public class ReturnEventMapper
 {
-    public static ReturnEventUpdatedDto ToDto(Event eventItem)
+    public static ReturnEventDto ToDto(Event eventItem)
     {
-        return new ReturnEventUpdatedDto()
+        return new ReturnEventDto()
         {
             Id = eventItem.Id,
             Name = eventItem.Name,
