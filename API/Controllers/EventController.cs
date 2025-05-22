@@ -102,5 +102,23 @@ public class EventController : ControllerBase
         return BadRequest(new { message = eventItem.Message });
     }
 
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete(int id)
+    {
+
+        var eventDeleted = await _eventUseCase.Delete(id);
+
+        if (eventDeleted.RequestSuccess == true)
+        {
+            return Ok(new
+            {
+                message = eventDeleted.Message,
+                data = eventDeleted.Value
+            });
+        }
+
+        return BadRequest(new { message = eventDeleted.Message });
+    }
+
 
 }

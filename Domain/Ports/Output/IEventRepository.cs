@@ -9,7 +9,7 @@ public interface IEventRepository
     Task<IEnumerable<Event>> GetByUserId(int userId);
     Task<Event> Create(Event createEvent);
     Task<Event> Update(Event updateEvent);
-    Task Delete(int id);
+    Task<Event> Delete(int id);
     Task<IEnumerable<Collaborator>> GetCollaborators(int eventId);
     Task AddCollaborator(int eventId, int userId, CollaboratorRole role);
     Task UpdateCollaboratorRole(int eventId, int userId, CollaboratorRole role);

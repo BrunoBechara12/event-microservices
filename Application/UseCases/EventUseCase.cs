@@ -103,12 +103,26 @@ public class EventUseCase : IEventUseCase
         }
     }
 
-    public Task Delete (int id)
+    public async Task<Result<Event>> Delete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var deletedEvent = await _eventRepository.Delete(id);
+
+            if (deletedEvent == null)
+            {
+                return Result<Event>.Failure("Event not found.");
+            }
+
+            return Result<Event>.Success(null, "Event deleted with success!");
+        }
+        catch (Exception ex)
+        {
+            return Result<Event>.Failure(ex.Message);
+        }
     }
 
-    public Task<Result<IEnumerable<Event>>> GetCollaborators(int userId)
+        public Task<Result<IEnumerable<Event>>> GetCollaborators(int userId)
     {
         throw new NotImplementedException();
     }

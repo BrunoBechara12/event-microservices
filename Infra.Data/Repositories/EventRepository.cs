@@ -63,9 +63,18 @@ public class EventRepository : IEventRepository
         return eventItem;
     }
 
-    public Task Delete(int id)
+    public async Task<Event> Delete(int id)
     {
-        throw new NotImplementedException();
+        var eventDeleted = _context.Events.FirstOrDefault(a => a.Id == id);
+
+        if (eventDeleted == null)
+            return null;
+
+        
+        _context.Events.Remove(eventDeleted);
+        await _context.SaveChangesAsync();
+
+        return eventDeleted;
     }
 
     public Task<IEnumerable<Collaborator>> GetCollaborators(int eventId)
