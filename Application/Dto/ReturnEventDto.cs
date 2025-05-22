@@ -1,6 +1,6 @@
 ﻿
 namespace Application.Dto;
-public class ReturnEventUpdatedDto
+public class ReturnEventDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

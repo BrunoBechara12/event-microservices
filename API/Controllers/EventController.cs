@@ -90,7 +90,7 @@ public class EventController : ControllerBase
 
         if (eventItem.RequestSuccess == true)
         {
-            var returnEventUpdated = ReturnEventUpdatedMapper.ToDto(eventItem.Value);
+            var returnEventUpdated = ReturnEventMapper.ToDto(eventItem.Value);
 
             return Ok(new
             {
