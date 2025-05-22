@@ -13,7 +13,8 @@ public class CreateEventMapper
             Description = createEventoDto.Description,
             Location = createEventoDto.Location,
             StartDate = createEventoDto.StartDate,
-            OwnerUserId = createEventoDto.OwnerUserId
+            OwnerUserId = createEventoDto.OwnerUserId,
+            CreatedAt = DateTime.UtcNow
         };
     }
 }
