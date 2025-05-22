@@ -18,46 +18,58 @@ public class EventController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var events = await _eventUseCase.GetAll();
+        var domainEvents = await _eventUseCase.GetAll();
 
-        if (events.RequestSuccess == true)
+        if (domainEvents.RequestSuccess == true)
+        {
+            var dtoEvents = domainEvents.Value.Select(ReturnEventMapper.ToDto).ToList();
+
             return Ok(new
             {
-                message = events.Message,
-                data = events.Value
+                message = domainEvents.Message,
+                data = dtoEvents
             });
+        }
 
-        return BadRequest(new { message = events.Message });
+        return BadRequest(new { message = domainEvents.Message });
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var eventItem = await _eventUseCase.GetById(id);
+        var domainEvent = await _eventUseCase.GetById(id);
 
-        if (eventItem.RequestSuccess == true)
+        if (domainEvent.RequestSuccess == true)
+        {
+            var dtoEvent = ReturnEventMapper.ToDto(domainEvent.Value);
+
             return Ok(new
             {
-                message = eventItem.Message,
-                data = eventItem.Value
+                message = domainEvent.Message,
+                data = dtoEvent
             });
+        }
 
-        return BadRequest(new { message = eventItem.Message });
+        return BadRequest(new { message = domainEvent.Message });
     }
 
     [HttpGet("~/api/users/{userId}/events")]
     public async Task<IActionResult> GetByUserId(int userId)
     {
-        var events = await _eventUseCase.GetByUserId(userId);
+        var domainEvents = await _eventUseCase.GetByUserId(userId);
 
-        if (events.RequestSuccess == true)
+        if (domainEvents.RequestSuccess == true)
+        {
+            var dtoEvents = domainEvents.Value.Select(ReturnEventMapper.ToDto).ToList();
+
             return Ok(new
             {
-                message = events.Message,
-                data = events.Value
+                message = domainEvents.Message,
+                data = dtoEvents
             });
+        }
 
-        return BadRequest(new { message = events.Message });
+        return BadRequest(new { message = domainEvents.Message });
     }
 
     [HttpPost()]
