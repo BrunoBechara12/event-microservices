@@ -5,17 +5,15 @@ namespace Application.Mappers;
 
 public class CreateEventMapper
 {
-    public static Event ToDomain(CreateEventDto createEventoDto)
+    public static Event ToDomain(CreateEventDto createEventDto)
     {
-        return new Event()
-        {
-            Name = createEventoDto.Name,
-            Description = createEventoDto.Description,
-            Location = createEventoDto.Location,
-            StartDate = createEventoDto.StartDate,
-            OwnerUserId = createEventoDto.OwnerUserId,
-            CreatedAt = DateTime.UtcNow
-        };
+        return new Event(
+            name: createEventDto.Name,
+            description: createEventDto.Description,
+            location: createEventDto.Location,
+            startDate: createEventDto.StartDate,
+            ownerUserId: createEventDto.OwnerUserId
+        );
     }
 }
 

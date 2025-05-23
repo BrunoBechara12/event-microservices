@@ -15,7 +15,19 @@ public sealed class Event
 
     public Event() { }
 
-    public Event(int id, string name, string description, string location, DateTime startDate, int ownerUserId, DateTime updatedAt)
+    public Event(string name, string description, string location, DateTime startDate, int ownerUserId)
+    {
+        
+        Validate(name, startDate);
+        Name = name;
+        Description = description;
+        Location = location;
+        StartDate = startDate;
+        OwnerUserId = ownerUserId;
+        CreatedAt = DateTime.Now;
+    }
+
+    public Event(int id, string name, string description, string location, DateTime startDate, int ownerUserId)
     {
         Id = id;
         Validate(name, startDate);
@@ -24,8 +36,7 @@ public sealed class Event
         Location = location;
         StartDate = startDate;
         OwnerUserId = ownerUserId;
-        CreatedAt = DateTime.Now;
-        UpdatedAt = updatedAt;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public static void Validate(string Name, DateTime StartDate)
