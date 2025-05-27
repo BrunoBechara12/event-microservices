@@ -22,7 +22,7 @@ public class EventController : ControllerBase
 
         if (domainEvents.RequestSuccess == true)
         {
-            var dtoEvents = domainEvents.Value!.Select(ReturnEventMapper.ToDto).ToList();
+            var dtoEvents = domainEvents.Data!.Select(ReturnEventMapper.ToDto).ToList();
 
             return Ok(new
             {
@@ -41,7 +41,7 @@ public class EventController : ControllerBase
 
         if (domainEvent.RequestSuccess == true)
         {
-            var dtoEvent = ReturnEventMapper.ToDto(domainEvent.Value!);
+            var dtoEvent = ReturnEventMapper.ToDto(domainEvent.Data!);
 
             return Ok(new
             {
@@ -60,7 +60,7 @@ public class EventController : ControllerBase
 
         if (domainEvents.RequestSuccess == true)
         {
-            var dtoEvents = domainEvents.Value!.Select(ReturnEventMapper.ToDto).ToList();
+            var dtoEvents = domainEvents.Data!.Select(ReturnEventMapper.ToDto).ToList();
 
             return Ok(new
             {
@@ -81,7 +81,7 @@ public class EventController : ControllerBase
 
         if (eventItem.RequestSuccess == true)
         {
-            var returnEventCreated = ReturnEventCreatedMapper.ToDto(eventItem.Value!);
+            var returnEventCreated = ReturnEventCreatedMapper.ToDto(eventItem.Data!);
 
             return Ok(new
             {
@@ -102,7 +102,7 @@ public class EventController : ControllerBase
 
         if (eventItem.RequestSuccess == true)
         {
-            var returnEventUpdated = ReturnEventMapper.ToDto(eventItem.Value!);
+            var returnEventUpdated = ReturnEventMapper.ToDto(eventItem.Data!);
 
             return Ok(new
             {
@@ -125,7 +125,7 @@ public class EventController : ControllerBase
             return Ok(new
             {
                 message = eventDeleted.Message,
-                data = eventDeleted.Value
+                data = eventDeleted.Data
             });
          }
 

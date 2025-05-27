@@ -3,19 +3,19 @@
 public class Result<T>
 {
     public bool RequestSuccess { get; }
-    public T? Value { get; }
+    public T? Data { get; }
     public string Message { get; }
 
-    private Result(bool requestSuccess, T? value, string message)
+    private Result(bool requestSuccess, T? data, string message)
     {
         RequestSuccess = requestSuccess;
-        Value = value;
+        Data = data;
         Message = message;
     }
 
-    public static Result<T> Success(T? value, string message)
+    public static Result<T> Success(T? data, string message)
     {
-        return new Result<T>(true, value, message);
+        return new Result<T>(true, data, message);
     }
 
     public static Result<T> Failure(string message)
