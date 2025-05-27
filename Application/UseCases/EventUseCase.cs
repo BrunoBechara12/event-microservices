@@ -16,113 +16,72 @@ public class EventUseCase : IEventUseCase
 
     public async Task<Result<IEnumerable<Event>>> GetAll()
     {
-        try
+        var events = await _eventRepository.GetAll();
+
+        if (events == null || !events.Any())
         {
-            var events = await _eventRepository.GetAll();
-
-            if (events == null || !events.Any())
-            {
-                return Result<IEnumerable<Event>>.Success(events, "No events found.");
-            }
-
-            return Result<IEnumerable<Event>>.Success(events, "Events found with sucess!");
-
+            return Result<IEnumerable<Event>>.Success(events, "No events found.");
         }
-        catch (Exception ex)
-        {
-            return Result<IEnumerable<Event>>.Failure(ex.Message);
-        }
+
+        return Result<IEnumerable<Event>>.Success(events, "Events found with sucess!");
     }
     public async Task<Result<Event>> GetById(int id)
     {
-        try
-        {
-            var eventItem = await _eventRepository.GetById(id);
+        var eventItem = await _eventRepository.GetById(id);
 
-            if(eventItem == null)
-            {
-                return Result<Event>.Success(eventItem, "Event not found.");
-            }
-
-            return Result<Event>.Success(eventItem, "Event found with sucess!");
-        }
-        catch (Exception ex)
+        if(eventItem == null)
         {
-            return Result<Event>.Failure(ex.Message);
+            return Result<Event>.Success(eventItem, "Event not found.");
         }
+
+        return Result<Event>.Success(eventItem, "Event found with sucess!");
     }
     public async Task<Result<IEnumerable<Event>>> GetByUserId(int userId)
     {
-        try
-        {
-            var eventItems = await _eventRepository.GetByUserId(userId);
+        var eventItems = await _eventRepository.GetByUserId(userId);
 
-            if(eventItems == null || !eventItems.Any())
-            {
-                return Result<IEnumerable<Event>>.Success(eventItems, "No events found for this user.");
-            }
-
-            return Result<IEnumerable<Event>>.Success(eventItems, "Events found with sucess!");
-        }
-        catch(Exception ex)
+        if(eventItems == null || !eventItems.Any())
         {
-            return Result<IEnumerable<Event>>.Failure(ex.Message);
+            return Result<IEnumerable<Event>>.Success(eventItems, "No events found for this user.");
         }
+
+        return Result<IEnumerable<Event>>.Success(eventItems, "Events found with sucess!"); 
     }
 
     public async Task<Result<Event>> Create(Event createEvent)
     {
-        try
-        {
-            var createdEvent = await _eventRepository.Create(createEvent);
 
-            return Result<Event>.Success(createdEvent, "Event created with success!");
-        } 
-        catch(Exception ex)
-        {
-            return Result<Event>.Failure(ex.Message);
-        }
+        var createdEvent = await _eventRepository.Create(createEvent);
+
+        return Result<Event>.Success(createdEvent, "Event created with success!");
+        
     }
 
     public async Task<Result<Event>> Update(Event updateEvent)
     {
-        try
-        {
-            var updatedEvent = await _eventRepository.Update(updateEvent);
+        var updatedEvent = await _eventRepository.Update(updateEvent);
 
-            if (updatedEvent == null)
-            {
-                return Result<Event>.Failure("Event not found.");
-            }
-
-            return Result<Event>.Success(updatedEvent, "Event updated with success!");
-        } 
-        catch (Exception ex)
+        if (updatedEvent == null)
         {
-            return Result<Event>.Failure(ex.Message);
+            return Result<Event>.Failure("Event not found.");
         }
+
+        return Result<Event>.Success(updatedEvent, "Event updated with success!");
     }
 
     public async Task<Result<Event>> Delete(int id)
     {
-        try
-        {
-            var deletedEvent = await _eventRepository.Delete(id);
+        var deletedEvent = await _eventRepository.Delete(id);
 
-            if (deletedEvent == null)
-            {
-                return Result<Event>.Failure("Event not found.");
-            }
-
-            return Result<Event>.Success(null, "Event deleted with success!");
-        }
-        catch (Exception ex)
+        if (deletedEvent == null)
         {
-            return Result<Event>.Failure(ex.Message);
+            return Result<Event>.Failure("Event not found.");
         }
+
+        return Result<Event>.Success(null, "Event deleted with success!");
     }
 
-        public Task<Result<IEnumerable<Event>>> GetCollaborators(int userId)
+    public Task<Result<IEnumerable<Event>>> GetCollaborators(int userId)
     {
         throw new NotImplementedException();
     }
