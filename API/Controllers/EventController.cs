@@ -22,7 +22,7 @@ public class EventController : ControllerBase
 
         if (domainEvents.RequestSuccess == true)
         {
-            var dtoEvents = domainEvents.Value.Select(ReturnEventMapper.ToDto).ToList();
+            var dtoEvents = domainEvents.Value!.Select(ReturnEventMapper.ToDto).ToList();
 
             return Ok(new
             {
@@ -41,7 +41,7 @@ public class EventController : ControllerBase
 
         if (domainEvent.RequestSuccess == true)
         {
-            var dtoEvent = ReturnEventMapper.ToDto(domainEvent.Value);
+            var dtoEvent = ReturnEventMapper.ToDto(domainEvent.Value!);
 
             return Ok(new
             {
@@ -60,7 +60,7 @@ public class EventController : ControllerBase
 
         if (domainEvents.RequestSuccess == true)
         {
-            var dtoEvents = domainEvents.Value.Select(ReturnEventMapper.ToDto).ToList();
+            var dtoEvents = domainEvents.Value!.Select(ReturnEventMapper.ToDto).ToList();
 
             return Ok(new
             {
@@ -72,7 +72,7 @@ public class EventController : ControllerBase
         return BadRequest(new { message = domainEvents.Message });
     }
 
-    [HttpPost()]
+    [HttpPost]
     public async Task<IActionResult> Create(CreateEventDto createEvent)
     {
         var domainEvent = CreateEventMapper.ToDomain(createEvent);
@@ -81,7 +81,7 @@ public class EventController : ControllerBase
 
         if (eventItem.RequestSuccess == true)
         {
-            var returnEventCreated = ReturnEventCreatedMapper.ToDto(eventItem.Value);
+            var returnEventCreated = ReturnEventCreatedMapper.ToDto(eventItem.Value!);
 
             return Ok(new
             {
@@ -93,7 +93,7 @@ public class EventController : ControllerBase
         return BadRequest(new { message = eventItem.Message });
     }
 
-    [HttpPut("update")]
+    [HttpPut]
     public async Task<IActionResult> Update(UpdateEventDto updateEvent)
     {
         var domainEvent = UpdateEventMapper.ToDomain(updateEvent);
@@ -102,7 +102,7 @@ public class EventController : ControllerBase
 
         if (eventItem.RequestSuccess == true)
         {
-            var returnEventUpdated = ReturnEventMapper.ToDto(eventItem.Value);
+            var returnEventUpdated = ReturnEventMapper.ToDto(eventItem.Value!);
 
             return Ok(new
             {
@@ -114,22 +114,22 @@ public class EventController : ControllerBase
         return BadRequest(new { message = eventItem.Message });
     }
 
-    [HttpDelete("delete")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
 
-        var eventDeleted = await _eventUseCase.Delete(id);
+         var eventDeleted = await _eventUseCase.Delete(id);
 
-        if (eventDeleted.RequestSuccess == true)
-        {
+         if (eventDeleted.RequestSuccess == true)
+         {
             return Ok(new
             {
                 message = eventDeleted.Message,
                 data = eventDeleted.Value
             });
-        }
+         }
 
-        return BadRequest(new { message = eventDeleted.Message });
+         return BadRequest(new { message = eventDeleted.Message });
     }
 
 
