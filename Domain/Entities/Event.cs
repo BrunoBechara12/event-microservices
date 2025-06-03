@@ -48,5 +48,5 @@ public sealed class Event
             throw new ArgumentException("StartDate cannot be in the past");
     }
 
-    public ICollection<Collaborator> Collaborators { get; set; }
+    public ICollection<EventCollaborator> EventCollaborators { get; set; }
 }
