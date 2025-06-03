@@ -70,30 +70,9 @@ public class EventRepository : IEventRepository
         if (eventDeleted == null)
             return null;
 
-        
         _context.Events.Remove(eventDeleted);
         await _context.SaveChangesAsync();
 
         return eventDeleted;
-    }
-
-    public Task<IEnumerable<Collaborator>> GetCollaborators(int eventId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task AddCollaborator(int eventId, int userId, CollaboratorRole role)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateCollaboratorRole(int eventId, int userId, CollaboratorRole role)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task RemoveCollaborator(int eventId, int userId)
-    {
-        throw new NotImplementedException();
     }
 }

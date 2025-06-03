@@ -80,24 +80,4 @@ public class EventUseCase : IEventUseCase
 
         return Result<Event>.Success(null, "Event deleted with success!");
     }
-
-    public Task<Result<IEnumerable<Event>>> GetCollaborators(int userId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task AddCollaborator(int eventId, int userId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateCollaboratorRole(int userId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task RemoveCollaborator(int eventId, int userId)
-    {
-        throw new NotImplementedException();
-    }
 }
