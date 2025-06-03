@@ -15,6 +15,7 @@ public static class ServiceInfraDataExtensions
         services.AddDbContext<EventDbContext>(options =>
             options.UseSqlServer(connectionString));
         services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<ICollaboratorRepository, CollaboratorRepository>();
         return services;
     }
 }
