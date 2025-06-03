@@ -10,8 +10,4 @@ public interface IEventRepository
     Task<Event> Create(Event createEvent);
     Task<Event> Update(Event updateEvent);
     Task<Event> Delete(int id);
-    Task<IEnumerable<Collaborator>> GetCollaborators(int eventId);
-    Task AddCollaborator(int eventId, int userId, CollaboratorRole role);
-    Task UpdateCollaboratorRole(int eventId, int userId, CollaboratorRole role);
-    Task RemoveCollaborator(int eventId, int userId);
 }
