@@ -6,7 +6,7 @@ public sealed class Collaborator
 {
     [Key]
     public int Id { get; set; }
-    public int Name { get; set; }
+    public string Name { get; set; }
     public int UserId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
@@ -20,9 +20,10 @@ public sealed class Collaborator
         UpdatedAt = DateTime.Now;
     }
 
-    public Collaborator(int userId)
+    public Collaborator(int userId, string name)
     {
         UserId = userId;
+        Name = name;
         CreatedAt = DateTime.Now;
     }
 
