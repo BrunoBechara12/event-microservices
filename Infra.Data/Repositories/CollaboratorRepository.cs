@@ -56,9 +56,19 @@ public class CollaboratorRepository : ICollaboratorRepository
         throw new NotImplementedException();
     }
 
-    public Task<Collaborator> UpdateRole(Collaborator collaborator)
+    public async Task<EventCollaborator> UpdateRole(EventCollaborator eventCollaborator)
     {
-        throw new NotImplementedException();
+        var collaboratorItem = await _context.EventCollaborators.FirstOrDefaultAsync(c => c.Id == eventCollaborator.Id);
+
+        if (collaboratorItem == null)
+            return null;
+
+        collaboratorItem.Role = eventCollaborator.Role;
+        collaboratorItem.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        return collaboratorItem;
     }
-    
+
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Dto;
 using Application.Mappers;
+using Application.UseCases;
 using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,6 +33,27 @@ public class CollaboratorController : ControllerBase
             {
                 message = collaboratorItem.Message,
                 data = returnCollaboratorCreated
+            });
+        }
+
+        return BadRequest(new { message = collaboratorItem.Message });
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateRole(UpdateCollaboratorDto collaborator)
+    {
+        var domainCollaborator = UpdateCollaboratorMapper.ToDomain(collaborator);
+
+        var collaboratorItem = await _collaboratorUseCase.UpdateRole(domainCollaborator);
+
+        if (collaboratorItem.RequestSuccess == true)
+        {
+            var returnCollaborator = ReturnCollaboratorUpdatedMapper.ToDto(collaboratorItem.Data!);
+
+            return Ok(new
+            {
+                message = collaboratorItem.Message,
+                data = returnCollaborator
             });
         }
 
