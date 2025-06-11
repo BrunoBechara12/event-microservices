@@ -1,7 +1,6 @@
-﻿using System.Data;
-using static Domain.Entities.EventCollaborator;
+﻿using static Domain.Entities.EventCollaborator;
 
-namespace Application.Dto;
+namespace Application.Dto.CollaboratorDto;
 public class CreateCollaboratorDto
 {
     public int UserId { get; set; }

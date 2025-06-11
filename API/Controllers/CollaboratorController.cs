@@ -1,6 +1,5 @@
-﻿using Application.Dto;
-using Application.Mappers;
-using Application.UseCases;
+﻿using Application.Dto.CollaboratorDto;
+using Application.Mappers.CollaboratorMapper;
 using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 

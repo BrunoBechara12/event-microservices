@@ -1,5 +1,4 @@
 ﻿namespace t;
-
 public class Result<T>
 {
     public bool RequestSuccess { get; }

@@ -1,13 +1,13 @@
-﻿using Application.Dto;
+﻿using Application.Dto.CollaboratorDto;
 using Domain.Entities;
 
-namespace Application.Mappers;
+namespace Application.Mappers.CollaboratorMapper;
 public class CreateCollaboratorMapper
 {
     public static Collaborator ToCollaboratorDomain(CreateCollaboratorDto dto)
     {
         return new Collaborator(
-            userId: dto.UserId, 
+            userId: dto.UserId,
             name: dto.Name
         );
     }
@@ -15,8 +15,8 @@ public class CreateCollaboratorMapper
     public static EventCollaborator ToEventCollaboratorDomain(CreateCollaboratorDto dto, int collaboratorId)
     {
         return new EventCollaborator(
-            eventId: dto.EventId, 
-            collaboratorId: collaboratorId, 
+            eventId: dto.EventId,
+            collaboratorId: collaboratorId,
             role: dto.Role
         );
     }

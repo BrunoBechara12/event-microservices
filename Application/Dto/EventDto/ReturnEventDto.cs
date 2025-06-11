@@ -1,5 +1,4 @@
-﻿
-namespace Application.Dto;
+﻿namespace Application.Dto.EventDto;
 public class ReturnEventDto
 {
     public int Id { get; set; }

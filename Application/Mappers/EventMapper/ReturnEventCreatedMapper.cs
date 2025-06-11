@@ -1,11 +1,10 @@
-﻿
-using Application.Dto;
+﻿using Application.Dto.EventDto;
 using Domain.Entities;
 
-namespace Application.Mappers;
+namespace Application.Mappers.EventMapper;
 public class ReturnEventCreatedMapper
 {
-    public static ReturnEventCreatedDto ToDto(Event eventItem) 
+    public static ReturnEventCreatedDto ToDto(Event eventItem)
     {
         return new ReturnEventCreatedDto
         {

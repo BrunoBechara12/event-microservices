@@ -2,7 +2,6 @@
 using Domain.Ports.Output;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using static Domain.Entities.Collaborator;
 
 namespace Infra.Data.Repositories;
 public class EventRepository : IEventRepository

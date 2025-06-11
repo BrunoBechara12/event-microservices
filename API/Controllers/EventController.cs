@@ -1,5 +1,5 @@
-﻿using Application.Dto;
-using Application.Mappers;
+﻿using Application.Dto.EventDto;
+using Application.Mappers.EventMapper;
 using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 

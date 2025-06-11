@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using static Domain.Entities.Collaborator;
 
 namespace Domain.Ports.Output;
 public interface IEventRepository
