@@ -51,11 +51,6 @@ public class CollaboratorRepository : ICollaboratorRepository
         throw new NotImplementedException();
     }
 
-    public Task<Collaborator> Remove(int collaboratorId, int eventId)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<EventCollaborator> UpdateRole(EventCollaborator eventCollaborator)
     {
         var collaboratorItem = await _context.EventCollaborators.FirstOrDefaultAsync(c => c.Id == eventCollaborator.Id);
@@ -69,6 +64,20 @@ public class CollaboratorRepository : ICollaboratorRepository
         await _context.SaveChangesAsync();
 
         return collaboratorItem;
+    }
+
+    public async Task<EventCollaborator> Remove(int collaboratorId, int eventId)
+    {
+
+        var eventCollaborator = await _context.EventCollaborators.Where(a => a.EventId == eventId && a.CollaboratorId == collaboratorId).FirstOrDefaultAsync();
+
+        if (eventCollaborator == null)
+            return null;
+
+        _context.EventCollaborators.Remove(eventCollaborator);
+        await _context.SaveChangesAsync();
+
+        return eventCollaborator;
     }
 
 }

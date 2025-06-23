@@ -58,4 +58,21 @@ public class CollaboratorController : ControllerBase
 
         return BadRequest(new { message = collaboratorItem.Message });
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete(int collaboratorId, int eventId)
+    {
+        var eventCollaboratorItem = await _collaboratorUseCase.Remove(collaboratorId, eventId);
+
+        if (eventCollaboratorItem.RequestSuccess == true)
+        {
+            return Ok(new
+            {
+                message = eventCollaboratorItem.Message,
+                data = eventCollaboratorItem.Data
+            });
+        }
+
+        return BadRequest(new { message = eventCollaboratorItem.Message });
+    }
 }

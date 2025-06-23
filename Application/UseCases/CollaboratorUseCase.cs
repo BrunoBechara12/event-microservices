@@ -7,10 +7,12 @@ namespace Application.UseCases;
 public class CollaboratorUseCase : ICollaboratorUseCase
 {
     public readonly ICollaboratorRepository _collaboratorRepository;
+    public readonly IEventRepository _eventRepository;
 
-    public CollaboratorUseCase(ICollaboratorRepository collaboratorRepository)
+    public CollaboratorUseCase(ICollaboratorRepository collaboratorRepository, IEventRepository eventRepository)
     {
         _collaboratorRepository = collaboratorRepository;
+        _eventRepository = eventRepository;
     }
 
     public async Task<Result<Collaborator>> Create(Collaborator collaborator, EventCollaborator eventCollaborator)
@@ -25,9 +27,18 @@ public class CollaboratorUseCase : ICollaboratorUseCase
         throw new NotImplementedException();
     }
 
-    public Task<Result<Collaborator>> Remove(int collaboratorId, int eventId)
+    public async Task<Result<Collaborator>> Remove(int collaboratorId, int eventId)
     {
-        throw new NotImplementedException();
+        var eventItem = await _eventRepository.GetById(eventId);
+        if(eventItem == null)
+            return Result<Collaborator>.Failure("Event not found.");
+        
+        var eventCollaboratorRemoved = await _collaboratorRepository.Remove(collaboratorId, eventId);
+
+        if(eventCollaboratorRemoved == null)
+            return Result<Collaborator>.Failure("Collaborator is not in this event.");
+
+        return Result<Collaborator>.Success(null, "Collaborator removed with success!");
     }
 
     public async Task<Result<EventCollaborator>> UpdateRole(EventCollaborator eventCollaborator)
