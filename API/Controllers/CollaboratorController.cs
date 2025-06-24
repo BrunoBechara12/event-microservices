@@ -18,20 +18,20 @@ public class CollaboratorController : ControllerBase
     [HttpGet("{eventId}")]
     public async Task<IActionResult> GetByEvent(int eventId)
     {
-        var collaboratorItem = await _collaboratorUseCase.GetByEventId(eventId);
+        var domainCollaborator = await _collaboratorUseCase.GetByEventId(eventId);
 
-        if (collaboratorItem.RequestSuccess == true)
+        if (domainCollaborator.RequestSuccess == true)
         {
-            var dtoCollaborator = collaboratorItem.Data!.Select(ReturnCollaboratorMapper.ToDto).ToList();
+            var dtoCollaborator = domainCollaborator.Data!.Select(ReturnCollaboratorMapper.ToDto).ToList();
 
             return Ok(new
             {
-                message = collaboratorItem.Message,
+                message = domainCollaborator.Message,
                 data = dtoCollaborator
             });
         }
 
-        return BadRequest(new { message = collaboratorItem.Message });
+        return BadRequest(new { message = domainCollaborator.Message });
     }
 
     [HttpPost]
@@ -45,12 +45,12 @@ public class CollaboratorController : ControllerBase
 
         if (collaboratorItem.RequestSuccess == true)
         {
-            var returnCollaboratorCreated = ReturnCollaboratorCreatedMapper.ToDto(collaboratorItem.Data!);
+            var dtoCollaborator = ReturnCollaboratorCreatedMapper.ToDto(collaboratorItem.Data!);
 
             return Ok(new
             {
                 message = collaboratorItem.Message,
-                data = returnCollaboratorCreated
+                data = dtoCollaborator
             });
         }
 
@@ -66,12 +66,12 @@ public class CollaboratorController : ControllerBase
 
         if (collaboratorItem.RequestSuccess == true)
         {
-            var returnCollaborator = ReturnCollaboratorUpdatedMapper.ToDto(collaboratorItem.Data!);
+            var dtoCollaborator = ReturnCollaboratorUpdatedMapper.ToDto(collaboratorItem.Data!);
 
             return Ok(new
             {
                 message = collaboratorItem.Message,
-                data = returnCollaborator
+                data = dtoCollaborator
             });
         }
 
@@ -81,17 +81,17 @@ public class CollaboratorController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> Delete(int collaboratorId, int eventId)
     {
-        var eventCollaboratorItem = await _collaboratorUseCase.Remove(collaboratorId, eventId);
+        var deletedCollaborator = await _collaboratorUseCase.Remove(collaboratorId, eventId);
 
-        if (eventCollaboratorItem.RequestSuccess == true)
+        if (deletedCollaborator.RequestSuccess == true)
         {
             return Ok(new
             {
-                message = eventCollaboratorItem.Message,
-                data = eventCollaboratorItem.Data
+                message = deletedCollaborator.Message,
+                data = deletedCollaborator.Data
             });
         }
 
-        return BadRequest(new { message = eventCollaboratorItem.Message });
+        return BadRequest(new { message = deletedCollaborator.Message });
     }
 }

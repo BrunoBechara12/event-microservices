@@ -15,23 +15,23 @@ public class EventRepository : IEventRepository
 
     public async Task<IEnumerable<Event>> GetAll()
     {
-        var eventList = await _context.Events.ToListAsync();
+        var events = await _context.Events.ToListAsync();
 
-        return eventList;
+        return events;
     }
 
     public async Task<Event> GetById(int id)
     {
-        var eventList = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
+        var events = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
 
-        return eventList;
+        return events;
     }
     
     public async Task<IEnumerable<Event>> GetByUserId(int userId)
     {
-        var eventList = await _context.Events.Where(x => x.OwnerUserId == userId).ToListAsync();
+        var events = await _context.Events.Where(x => x.OwnerUserId == userId).ToListAsync();
 
-        return eventList;
+        return events;
     }
 
     public async Task<Event> Create(Event createEvent)
@@ -64,14 +64,14 @@ public class EventRepository : IEventRepository
 
     public async Task<Event> Delete(int id)
     {
-        var eventDeleted = _context.Events.FirstOrDefault(a => a.Id == id);
+        var deletedEvent = _context.Events.FirstOrDefault(a => a.Id == id);
 
-        if (eventDeleted == null)
+        if (deletedEvent == null)
             return null;
 
-        _context.Events.Remove(eventDeleted);
+        _context.Events.Remove(deletedEvent);
         await _context.SaveChangesAsync();
 
-        return eventDeleted;
+        return deletedEvent;
     }
 }

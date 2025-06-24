@@ -81,12 +81,12 @@ public class EventController : ControllerBase
 
         if (eventItem.RequestSuccess == true)
         {
-            var returnEventCreated = ReturnEventCreatedMapper.ToDto(eventItem.Data!);
+            var dtoEvent = ReturnEventCreatedMapper.ToDto(eventItem.Data!);
 
             return Ok(new
             {
                 message = eventItem.Message,
-                data = returnEventCreated
+                data = dtoEvent
             });
         }
 
@@ -102,12 +102,12 @@ public class EventController : ControllerBase
 
         if (eventItem.RequestSuccess == true)
         {
-            var returnEventUpdated = ReturnEventMapper.ToDto(eventItem.Data!);
+            var dtoEvent = ReturnEventMapper.ToDto(eventItem.Data!);
 
             return Ok(new
             {
                 message = eventItem.Message,
-                data = returnEventUpdated
+                data = dtoEvent
             });
         }
 
@@ -117,19 +117,18 @@ public class EventController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
+         var deletedEvent = await _eventUseCase.Delete(id);
 
-         var eventDeleted = await _eventUseCase.Delete(id);
-
-         if (eventDeleted.RequestSuccess == true)
+         if (deletedEvent.RequestSuccess == true)
          {
             return Ok(new
             {
-                message = eventDeleted.Message,
-                data = eventDeleted.Data
+                message = deletedEvent.Message,
+                data = deletedEvent.Data
             });
          }
 
-         return BadRequest(new { message = eventDeleted.Message });
+         return BadRequest(new { message = deletedEvent.Message });
     }
 
 

@@ -40,9 +40,9 @@ public class CollaboratorUseCase : ICollaboratorUseCase
         if(eventItem == null)
             return Result<Collaborator>.Failure("Event not found.");
         
-        var eventCollaboratorRemoved = await _collaboratorRepository.Remove(collaboratorId, eventId);
+        var removedCollaborator = await _collaboratorRepository.Remove(collaboratorId, eventId);
 
-        if(eventCollaboratorRemoved == null)
+        if(removedCollaborator == null)
             return Result<Collaborator>.Failure("Collaborator is not in this event.");
 
         return Result<Collaborator>.Success(null, "Collaborator removed with success!");

@@ -29,28 +29,28 @@ public class CollaboratorRepository : ICollaboratorRepository
         var existingCollaborator = _context.Collaborators
             .FirstOrDefault(c => c.UserId == collaborator.UserId);
 
-        Collaborator collaboratorToReturn;
+        Collaborator returnCollaborator;
 
         if (existingCollaborator == null)
         {
             var addedCollaborator = await _context.Collaborators.AddAsync(collaborator);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
 
-            collaboratorToReturn = addedCollaborator.Entity;
+            returnCollaborator = addedCollaborator.Entity;
         }
         else
         {
-            collaboratorToReturn = existingCollaborator;
+            returnCollaborator = existingCollaborator;
         }
 
-        eventCollaborator.CollaboratorId = collaboratorToReturn.Id;
+        eventCollaborator.CollaboratorId = returnCollaborator.Id;
 
         await _context.EventCollaborators.AddAsync(eventCollaborator);
         await _context.SaveChangesAsync();
 
-        collaboratorToReturn.EventCollaborators = new List<EventCollaborator> { eventCollaborator };
+        returnCollaborator.EventCollaborators = new List<EventCollaborator> { eventCollaborator };
 
-        return collaboratorToReturn;
+        return returnCollaborator;
     }
 
     public async Task<EventCollaborator> UpdateRole(EventCollaborator eventCollaborator)
