@@ -13,6 +13,13 @@ public class CollaboratorRepository : ICollaboratorRepository
         _context = context;
     }
 
+    public async Task<IEnumerable<Collaborator>> GetByEventId(int eventId)
+    {
+        var collaborators = await _context.Collaborators.Where(c => c.EventCollaborators.Any(ec => ec.EventId == eventId)).ToListAsync();
+
+        return collaborators;
+    }
+
     public async Task<Collaborator> Create(Collaborator collaborator, EventCollaborator eventCollaborator)
     {
         var eventItem = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventCollaborator.EventId);
@@ -44,11 +51,6 @@ public class CollaboratorRepository : ICollaboratorRepository
         collaboratorToReturn.EventCollaborators = new List<EventCollaborator> { eventCollaborator };
 
         return collaboratorToReturn;
-    }
-
-    public Task<IEnumerable<Collaborator>> Get(int eventId)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<EventCollaborator> UpdateRole(EventCollaborator eventCollaborator)

@@ -15,16 +15,23 @@ public class CollaboratorUseCase : ICollaboratorUseCase
         _eventRepository = eventRepository;
     }
 
+    public async Task<Result<IEnumerable<Collaborator>>> GetByEventId(int eventId)
+    {
+        var collaborators = await _collaboratorRepository.GetByEventId(eventId);
+
+        if (collaborators == null)
+        {
+            return Result<IEnumerable<Collaborator>>.Success(collaborators, "No collaborators found.");
+        }
+
+        return Result<IEnumerable<Collaborator>>.Success(collaborators, "Collaborators found with success!");
+    }
+
     public async Task<Result<Collaborator>> Create(Collaborator collaborator, EventCollaborator eventCollaborator)
     {
         var createdCollaborator = await _collaboratorRepository.Create(collaborator, eventCollaborator);
 
         return Result<Collaborator>.Success(createdCollaborator, "Collaborator created with success!");
-    }
-
-    public Task<Result<IEnumerable<Collaborator>>> Get(int userId)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<Result<Collaborator>> Remove(int collaboratorId, int eventId)

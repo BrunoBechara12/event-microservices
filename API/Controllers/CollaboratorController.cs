@@ -15,6 +15,25 @@ public class CollaboratorController : ControllerBase
         _collaboratorUseCase = collaboratorUseCase;
     }
 
+    [HttpGet("{eventId}")]
+    public async Task<IActionResult> GetByEvent(int eventId)
+    {
+        var collaboratorItem = await _collaboratorUseCase.GetByEventId(eventId);
+
+        if (collaboratorItem.RequestSuccess == true)
+        {
+            var dtoCollaborator = collaboratorItem.Data!.Select(ReturnCollaboratorMapper.ToDto).ToList();
+
+            return Ok(new
+            {
+                message = collaboratorItem.Message,
+                data = dtoCollaborator
+            });
+        }
+
+        return BadRequest(new { message = collaboratorItem.Message });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(CreateCollaboratorDto createCollaborator)
     {
