@@ -4,12 +4,17 @@ using Domain.Entities;
 namespace Application.Mappers.CollaboratorMapper;
 public class ReturnCollaboratorMapper
 {
-    public static ReturnCollaboratorDto ToDto(Collaborator collaboratorItem)
+    public static ReturnCollaboratorDto ToDto(EventCollaborator collaboratorItem)
     {
         return new ReturnCollaboratorDto
         {
-            UserId = collaboratorItem.UserId,
-            Name = collaboratorItem.Name
+            Id = collaboratorItem.Collaborator.Id,
+            Name = collaboratorItem.Collaborator.Name,
+            UserId = collaboratorItem.Collaborator.UserId,
+            EventId = collaboratorItem.EventId,
+            Role = collaboratorItem.Role.ToString(),
+            CreatedAt = collaboratorItem.Collaborator.CreatedAt,
+            AddedAt = collaboratorItem.CreatedAt
         };
     }
 }

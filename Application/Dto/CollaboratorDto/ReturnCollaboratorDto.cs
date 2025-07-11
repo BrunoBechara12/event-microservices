@@ -1,6 +1,13 @@
-﻿namespace Application.Dto.CollaboratorDto;
+﻿using static Domain.Entities.EventCollaborator;
+
+namespace Application.Dto.CollaboratorDto;
 public class ReturnCollaboratorDto
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
+    public int UserId { get; set; }
+    public int EventId { get; set; }
+    public string Role { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime AddedAt { get; set; }
 }
