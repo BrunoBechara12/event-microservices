@@ -4,11 +4,11 @@ using Domain.Entities;
 namespace Application.Mappers.CollaboratorMapper;
 public class UpdateCollaboratorMapper
 {
-    public static EventCollaborator ToDomain(UpdateCollaboratorDto updateCollaboratorDto)
+    public static Collaborator ToDomain(UpdateCollaboratorDto updateCollaboratorDto)
     {
-        return new EventCollaborator(
+        return Collaborator.Update(
             id: updateCollaboratorDto.Id,
-            role: updateCollaboratorDto.Role
+            name: updateCollaboratorDto.Name
         );
     }
 }

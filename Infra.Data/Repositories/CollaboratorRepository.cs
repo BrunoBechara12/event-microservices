@@ -13,11 +13,19 @@ public class CollaboratorRepository : ICollaboratorRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Collaborator>> GetByEventId(int eventId)
+    public async Task<IEnumerable<EventCollaborator>> GetByEventId(int eventId)
     {
-        var collaborators = await _context.Collaborators.Where(c => c.EventCollaborators.Any(ec => ec.EventId == eventId)).ToListAsync();
+        var eventItem = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventId);
 
-        return collaborators;
+        if (eventItem == null)
+            throw new Exception("Event not found");
+
+        var eventCollaborators = await _context.EventCollaborators
+            .Include(ec => ec.Collaborator)
+            .Where(ec => ec.EventId == eventId)
+            .ToListAsync();
+
+        return eventCollaborators;
     }
 
     public async Task<Collaborator> Create(Collaborator collaborator, EventCollaborator eventCollaborator)
@@ -40,6 +48,8 @@ public class CollaboratorRepository : ICollaboratorRepository
         }
         else
         {
+            existingCollaborator.UpdatedAt = DateTime.UtcNow;
+            existingCollaborator.Name = collaborator.Name;
             returnCollaborator = existingCollaborator;
         }
 
@@ -55,12 +65,27 @@ public class CollaboratorRepository : ICollaboratorRepository
 
     public async Task<EventCollaborator> UpdateRole(EventCollaborator eventCollaborator)
     {
-        var collaboratorItem = await _context.EventCollaborators.FirstOrDefaultAsync(c => c.Id == eventCollaborator.Id);
+        var collaboratorItem = await _context.EventCollaborators.FirstOrDefaultAsync(c => c.CollaboratorId == eventCollaborator.Id);
 
         if (collaboratorItem == null)
             return null;
 
         collaboratorItem.Role = eventCollaborator.Role;
+        collaboratorItem.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        return collaboratorItem;
+    }
+
+    public async Task<Collaborator> UpdateCollaborator(Collaborator collaborator)
+    {
+        var collaboratorItem = await _context.Collaborators.FirstOrDefaultAsync(c => c.Id == collaborator.Id);
+
+        if (collaboratorItem == null)
+            return null;
+
+        collaboratorItem.Name = collaborator.Name;
         collaboratorItem.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();

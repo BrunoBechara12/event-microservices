@@ -4,12 +4,12 @@ using Domain.Entities;
 namespace Application.Mappers.CollaboratorMapper;
 public class ReturnCollaboratorUpdatedMapper
 {
-    public static ReturnCollaboratorUpdatedDto ToDto(EventCollaborator collaborator)
+    public static ReturnCollaboratorUpdatedDto ToDto(Collaborator collaborator)
     {
         return new ReturnCollaboratorUpdatedDto
         {
             Id = collaborator.Id,
-            Role = collaborator.Role
+            Name = collaborator.Name
         };
     }
 }

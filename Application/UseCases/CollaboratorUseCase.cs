@@ -15,16 +15,16 @@ public class CollaboratorUseCase : ICollaboratorUseCase
         _eventRepository = eventRepository;
     }
 
-    public async Task<Result<IEnumerable<Collaborator>>> GetByEventId(int eventId)
+    public async Task<Result<IEnumerable<EventCollaborator>>> GetByEventId(int eventId)
     {
         var collaborators = await _collaboratorRepository.GetByEventId(eventId);
 
-        if (collaborators == null)
+        if (collaborators.Count() == 0)
         {
-            return Result<IEnumerable<Collaborator>>.Success(collaborators, "No collaborators found.");
+            return Result<IEnumerable<EventCollaborator>>.Success(collaborators, "No collaborators found.");
         }
 
-        return Result<IEnumerable<Collaborator>>.Success(collaborators, "Collaborators found with success!");
+        return Result<IEnumerable<EventCollaborator>>.Success(collaborators, "Collaborators found with success!");
     }
 
     public async Task<Result<Collaborator>> Create(Collaborator collaborator, EventCollaborator eventCollaborator)
@@ -39,7 +39,7 @@ public class CollaboratorUseCase : ICollaboratorUseCase
         var eventItem = await _eventRepository.GetById(eventId);
         if(eventItem == null)
             return Result<Collaborator>.Failure("Event not found.");
-        
+
         var removedCollaborator = await _collaboratorRepository.Remove(collaboratorId, eventId);
 
         if(removedCollaborator == null)
@@ -58,5 +58,17 @@ public class CollaboratorUseCase : ICollaboratorUseCase
         }
 
         return Result<EventCollaborator>.Success(collaboratorItem, "Collaborator role updated with success!");
+    }
+
+    public async Task<Result<Collaborator>> UpdateCollaborator(Collaborator eventCollaborator)
+    {
+        var collaboratorItem = await _collaboratorRepository.UpdateCollaborator(eventCollaborator);
+
+        if (collaboratorItem == null)
+        {
+            return Result<Collaborator>.Failure("Collaborator not found.");
+        }
+
+        return Result<Collaborator>.Success(collaboratorItem, "Collaborator updated with success!");
     }
 }

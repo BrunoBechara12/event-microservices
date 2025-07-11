@@ -57,12 +57,33 @@ public class CollaboratorController : ControllerBase
         return BadRequest(new { message = collaboratorItem.Message });
     }
 
+    [HttpPut("UpdateRole")]
+    public async Task<IActionResult> UpdateRole(UpdateCollaboratorRoleDto collaborator)
+    {
+        var domainCollaborator = UpdateCollaboratorRoleMapper.ToDomain(collaborator);
+
+        var collaboratorItem = await _collaboratorUseCase.UpdateRole(domainCollaborator);
+
+        if (collaboratorItem.RequestSuccess == true)
+        {
+            var dtoCollaborator = ReturnCollaboratorRoleUpdatedMapper.ToDto(collaboratorItem.Data!);
+
+            return Ok(new
+            {
+                message = collaboratorItem.Message,
+                data = dtoCollaborator
+            });
+        }
+
+        return BadRequest(new { message = collaboratorItem.Message });
+    }
+
     [HttpPut]
-    public async Task<IActionResult> UpdateRole(UpdateCollaboratorDto collaborator)
+    public async Task<IActionResult> UpdateCollaborator(UpdateCollaboratorDto collaborator)
     {
         var domainCollaborator = UpdateCollaboratorMapper.ToDomain(collaborator);
 
-        var collaboratorItem = await _collaboratorUseCase.UpdateRole(domainCollaborator);
+        var collaboratorItem = await _collaboratorUseCase.UpdateCollaborator(domainCollaborator);
 
         if (collaboratorItem.RequestSuccess == true)
         {
@@ -87,8 +108,7 @@ public class CollaboratorController : ControllerBase
         {
             return Ok(new
             {
-                message = deletedCollaborator.Message,
-                data = deletedCollaborator.Data
+                message = deletedCollaborator.Message
             });
         }
 
