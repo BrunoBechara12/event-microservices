@@ -11,19 +11,27 @@ public sealed class Collaborator
     public DateTime? UpdatedAt { get; set; }
 
     public Collaborator() { }
-
-    public Collaborator(int id, int userId)
+    private Collaborator(string name)
     {
-        Id = id;
-        UserId = userId;
-        UpdatedAt = DateTime.Now;
+        Name = name;
     }
 
-    public Collaborator(int userId, string name)
+    public static Collaborator Create(int userId, string name)
     {
-        UserId = userId;
-        Name = name;
-        CreatedAt = DateTime.Now;
+        return new Collaborator(name)
+        {
+            UserId = userId,
+            CreatedAt = DateTime.Now
+        };
+    }
+
+    public static Collaborator Update(int id, string name)
+    {
+        return new Collaborator(name)
+        {
+            Id = id,
+            UpdatedAt = DateTime.Now
+        };
     }
 
     public ICollection<EventCollaborator> EventCollaborators { get; set; }
