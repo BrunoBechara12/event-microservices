@@ -6,7 +6,7 @@ public class CreateCollaboratorMapper
 {
     public static Collaborator ToCollaboratorDomain(CreateCollaboratorDto dto)
     {
-        return new Collaborator(
+        return Collaborator.Create(
             userId: dto.UserId,
             name: dto.Name
         );
