@@ -20,7 +20,7 @@ public class EventRepository : IEventRepository
         return events;
     }
 
-    public async Task<Event> GetById(int id)
+    public async Task<Event?> GetById(int id)
     {
         var events = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
 

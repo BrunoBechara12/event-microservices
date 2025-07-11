@@ -6,6 +6,9 @@ public class ReturnEventMapper
 {
     public static ReturnEventDto ToDto(Event eventItem)
     {
+        if (eventItem == null)
+            return null;
+
         return new ReturnEventDto()
         {
             Id = eventItem.Id,
