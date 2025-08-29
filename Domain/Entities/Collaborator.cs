@@ -13,6 +13,7 @@ public sealed class Collaborator
     public Collaborator() { }
     private Collaborator(string name)
     {
+        Validate(name);
         Name = name;
     }
 
@@ -32,6 +33,12 @@ public sealed class Collaborator
             Id = id,
             UpdatedAt = DateTime.Now
         };
+    }
+    
+    public static void Validate(string name)
+    {
+        if(name is null || name.Length < 3)
+            throw new ArgumentException("Name must be at least 3 characters long");
     }
 
     public ICollection<EventCollaborator> EventCollaborators { get; set; }
