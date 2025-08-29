@@ -7,7 +7,7 @@ public class CreateEventMapper
 {
     public static Event ToDomain(CreateEventDto createEventDto)
     {
-        return new Event(
+        return Event.Create(
             name: createEventDto.Name,
             description: createEventDto.Description,
             location: createEventDto.Location,

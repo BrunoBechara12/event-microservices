@@ -6,7 +6,7 @@ public class UpdateEventMapper
 {
     public static Event ToDomain(UpdateEventDto updateEventoDto)
     {
-        return new Event(
+        return Event.Update(
             id: updateEventoDto.Id,
             name: updateEventoDto.Name,
             description: updateEventoDto.Description,

@@ -14,37 +14,40 @@ public sealed class Event
     public DateTime? UpdatedAt { get; set; }
 
     public Event() { }
-
-    public Event(string name, string description, string location, DateTime startDate, int ownerUserId)
+    
+    private Event(string name, string description, string location, DateTime startDate, int ownerUserId)
     {
-        
         Validate(name, startDate);
         Name = name;
         Description = description;
         Location = location;
         StartDate = startDate;
         OwnerUserId = ownerUserId;
-        CreatedAt = DateTime.Now;
     }
 
-    public Event(int id, string name, string description, string location, DateTime startDate, int ownerUserId)
+    public static Event Create(string name, string description, string location, DateTime startDate, int ownerUserId)
     {
-        Id = id;
-        Validate(name, startDate);
-        Name = name;
-        Description = description;
-        Location = location;
-        StartDate = startDate;
-        OwnerUserId = ownerUserId;
-        UpdatedAt = DateTime.UtcNow;
+        return new Event(name, description, location, startDate, ownerUserId)
+        {
+            CreatedAt = DateTime.UtcNow
+        };
+    }
+    
+    public static Event Update(int id, string name, string description, string location, DateTime startDate, int ownerUserId)
+    {
+        return new Event(name, description, location, startDate, ownerUserId)
+        {
+            Id = id,
+            UpdatedAt = DateTime.UtcNow
+        };
     }
 
-    public static void Validate(string Name, DateTime StartDate)
+    public static void Validate(string name, DateTime startDate)
     {
-        if(Name is null || Name.Length < 3)
+        if(name is null || name.Length < 3)
             throw new ArgumentException("Name must be at least 3 characters long");
 
-        if(StartDate < DateTime.Now)
+        if(startDate < DateTime.Now)
             throw new ArgumentException("StartDate cannot be in the past");
     }
 
