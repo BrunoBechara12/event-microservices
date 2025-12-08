@@ -1,6 +1,6 @@
 ﻿using Domain.Ports.Output;
-using Infra.Data.Context;
-using Infra.Data.Repositories;
+using Adapters.Secondary.Data.Context;
+using Adapters.Secondary.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

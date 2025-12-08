@@ -1,9 +1,10 @@
-﻿using Application.Dto.CollaboratorDto;
-using Application.Mappers.CollaboratorMapper;
+﻿using API.Dto.CollaboratorDto;
+using API.Mappers.CollaboratorMapper;
 using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+
 [Route("api/collaborators")]
 [ApiController]
 public class CollaboratorController : ControllerBase

@@ -1,9 +1,9 @@
 ﻿using Domain.Entities;
 using Domain.Ports.Output;
-using Infra.Data.Context;
+using Adapters.Secondary.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infra.Data.Repositories;
+namespace Adapters.Secondary.Data.Repositories;
 public class CollaboratorRepository : ICollaboratorRepository
 {
     private readonly EventDbContext _context;

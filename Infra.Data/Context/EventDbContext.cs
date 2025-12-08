@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infra.Data.Context;
+namespace Adapters.Secondary.Data.Context;
 public class EventDbContext : DbContext
 {
     public EventDbContext(DbContextOptions<EventDbContext> options) : base(options)

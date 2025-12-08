@@ -1,9 +1,10 @@
-﻿using Application.Dto.EventDto;
-using Application.Mappers.EventMapper;
+﻿using API.Dto.EventDto;
+using API.Mappers.EventMapper;
 using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+
 [Route("api/events")]
 [ApiController]
 public class EventController : ControllerBase
