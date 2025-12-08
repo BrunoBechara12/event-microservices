@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Ports.In;
 using Domain.Ports.Output;
-using t;
+using Result;
 
 namespace Application.UseCases;
 public class CollaboratorUseCase : ICollaboratorUseCase

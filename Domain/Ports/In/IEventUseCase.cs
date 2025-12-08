@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using t;
+using Result;
 
 namespace Domain.Ports.In;
 public interface IEventUseCase
