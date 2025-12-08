@@ -1,7 +1,7 @@
-﻿using Application.Dto.CollaboratorDto;
+﻿using API.Dto.CollaboratorDto;
 using Domain.Entities;
 
-namespace Application.Mappers.CollaboratorMapper;
+namespace API.Mappers.CollaboratorMapper;
 public class ReturnCollaboratorRoleUpdatedMapper
 {
     public static ReturnCollaboratorRoleUpdatedDto ToDto(EventCollaborator collaborator)

@@ -1,4 +1,4 @@
-﻿namespace Application.Dto.CollaboratorDto;
+﻿namespace API.Dto.CollaboratorDto;
 public class ReturnCollaboratorCreatedDto
 {
     public int Id { get; set; }

@@ -1,6 +1,6 @@
 ﻿using static Domain.Entities.EventCollaborator;
 
-namespace Application.Dto.CollaboratorDto;
+namespace API.Dto.CollaboratorDto;
 public class CreateCollaboratorDto
 {
     public int UserId { get; set; }

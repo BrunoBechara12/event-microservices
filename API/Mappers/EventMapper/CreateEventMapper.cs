@@ -1,7 +1,7 @@
-﻿using Application.Dto.EventDto;
+﻿using API.Dto.EventDto;
 using Domain.Entities;
 
-namespace Application.Mappers.EventMapper;
+namespace API.Mappers.EventMapper;
 
 public class CreateEventMapper
 {
