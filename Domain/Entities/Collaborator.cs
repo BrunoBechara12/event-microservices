@@ -4,35 +4,31 @@ namespace Domain.Entities;
 public sealed class Collaborator
 {
     [Key]
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public int UserId { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    public int Id { get; private set; }
+    public string Name { get; private set; }
+    public int UserId { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
-    public Collaborator() { }
-    private Collaborator(string name)
+    private Collaborator() { }
+    private Collaborator(int userId, string name)
     {
         Validate(name);
+
+        UserId = userId;
         Name = name;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public static Collaborator Create(int userId, string name)
     {
-        return new Collaborator(name)
-        {
-            UserId = userId,
-            CreatedAt = DateTime.Now
-        };
+        return new Collaborator(userId, name);
     }
 
-    public static Collaborator Update(int id, string name)
+    public void Update(int id, string name)
     {
-        return new Collaborator(name)
-        {
-            Id = id,
-            UpdatedAt = DateTime.Now
-        };
+        Name = name;
+        UpdatedAt = DateTime.UtcNow;
     }
     
     public static void Validate(string name)
