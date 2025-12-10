@@ -4,42 +4,41 @@ namespace Domain.Entities;
 public sealed class Event
 {
     [Key]
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string Location { get; set; }
-    public DateTime StartDate { get; set; }
-    public int OwnerUserId { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    public int Id { get; private set; }
+    public string Name { get; private set; }
+    public string Description { get; private set; }
+    public string Location { get; private set; }
+    public DateTime StartDate { get; private set; }
+    public int OwnerUserId { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
-    public Event() { }
-    
+    private Event() { }
     private Event(string name, string description, string location, DateTime startDate, int ownerUserId)
     {
-        Validate(name, startDate);
         Name = name;
         Description = description;
         Location = location;
         StartDate = startDate;
         OwnerUserId = ownerUserId;
+        CreatedAt = DateTime.UtcNow;
     }
-
     public static Event Create(string name, string description, string location, DateTime startDate, int ownerUserId)
     {
-        return new Event(name, description, location, startDate, ownerUserId)
-        {
-            CreatedAt = DateTime.UtcNow
-        };
+        Validate(name, startDate);
+
+        return new Event(name, description, location, startDate, ownerUserId);
     }
-    
-    public static Event Update(int id, string name, string description, string location, DateTime startDate, int ownerUserId)
+
+    public void Update(string name, string description, string location, DateTime startDate)
     {
-        return new Event(name, description, location, startDate, ownerUserId)
-        {
-            Id = id,
-            UpdatedAt = DateTime.UtcNow
-        };
+        Validate(name, startDate);
+
+        Name = name;
+        Description = description;
+        Location = location;
+        StartDate = startDate;
+        UpdatedAt = DateTime.UtcNow; 
     }
 
     public static void Validate(string name, DateTime startDate)
