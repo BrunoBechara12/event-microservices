@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Domain.Entities;
 public sealed class EventCollaborator
@@ -10,32 +11,36 @@ public sealed class EventCollaborator
     }
 
     [Key]
-    public int Id { get; set; }
+    public int Id { get; private set; }
+    public int EventId { get; private set; }
+    public int CollaboratorId { get; private set; }
+    public CollaboratorRole Role { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
-    public int EventId { get; set; }
-    public Event Event { get; set; }
+    [JsonIgnore]
+    public Event Event { get; private set; }
+    [JsonIgnore]
+    public Collaborator Collaborator { get; private set; }
 
-    public int CollaboratorId { get; set; }
-    public Collaborator Collaborator { get; set; }
-
-    public CollaboratorRole Role { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-
-    public EventCollaborator() { }
+    private EventCollaborator() { }
 
     public EventCollaborator(int eventId, int collaboratorId, CollaboratorRole role)
     {
+        if(eventId <= 0) throw new ArgumentException("Invalid EventId");
+        if(collaboratorId <= 0) throw new ArgumentException("Invalid CollaboratorId");
+
         EventId = eventId;
         CollaboratorId = collaboratorId;
         Role = role;
         CreatedAt = DateTime.UtcNow;
     }
 
-    public EventCollaborator(int id, CollaboratorRole role)
+    public void UpdateRole(CollaboratorRole newRole)
     {
-        Id = id;
-        Role = role;
+        if (Role == newRole) return;
+
+        Role = newRole;
         UpdatedAt = DateTime.UtcNow;
     }
 }
