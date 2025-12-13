@@ -4,7 +4,7 @@ namespace Application.UseCases.Event.Outputs;
 
 public static class EventExtensions
 {
-    public static DefaultEventOutput? ToEventOutput(EventEntity entity)
+    public static DefaultEventOutput? ToDefaultEventOutput(this EventEntity entity)
     {
         if (entity == null) return null;
 
@@ -14,7 +14,7 @@ public static class EventExtensions
         );
     }
 
-    public static DetailedEventOutput? ToDetailedEventOutput(EventEntity entity)
+    public static DetailedEventOutput? ToDetailedEventOutput(this EventEntity entity)
     {
         if (entity == null) return null;
 
