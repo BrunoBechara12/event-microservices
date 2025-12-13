@@ -1,7 +1,6 @@
-﻿using API.Dto.EventDto;
-using API.Mappers.EventMapper;
-using Domain.Ports.In;
+﻿using Application.UseCases.Event.Inputs;
 using Microsoft.AspNetCore.Mvc;
+using Application.Ports.In;
 
 namespace API.Controllers;
 
@@ -19,75 +18,65 @@ public class EventController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var domainEvents = await _eventUseCase.GetAll();
+        var events = await _eventUseCase.Get();
 
-        if (domainEvents.RequestSuccess == true)
+        if (events.RequestSuccess)
         {
-            var dtoEvents = domainEvents.Data!.Select(ReturnEventMapper.ToDto).ToList();
-
             return Ok(new
             {
-                message = domainEvents.Message,
-                data = dtoEvents
+                message = events.Message,
+                data = events.Data
             });
         }
 
-        return BadRequest(new { message = domainEvents.Message });
+        return BadRequest(new { message = events.Message });
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var domainEvent = await _eventUseCase.GetById(id);
+        var eventItem = await _eventUseCase.GetById(id);
 
-        if (domainEvent.RequestSuccess == true)
+        if (eventItem.RequestSuccess)
         {
-            var dtoEvent = ReturnEventMapper.ToDto(domainEvent.Data!);
-
             return Ok(new
             {
-                message = domainEvent.Message,
-                data = dtoEvent
+                message = eventItem.Message,
+                data = eventItem.Data
             });
         }
 
-        return BadRequest(new { message = domainEvent.Message });
+        return BadRequest(new { message = eventItem.Message });
     }
 
     [HttpGet("~/api/users/{userId}/events")]
     public async Task<IActionResult> GetByUserId(int userId)
     {
-        var domainEvents = await _eventUseCase.GetByUserId(userId);
+        var events = await _eventUseCase.GetByUserId(userId);
 
-        if (domainEvents.RequestSuccess == true)
+        if (events.RequestSuccess)
         {
-            var dtoEvents = domainEvents.Data!.Select(ReturnEventMapper.ToDto).ToList();
-
             return Ok(new
             {
-                message = domainEvents.Message,
-                data = dtoEvents
+                message = events.Message,
+                data = events.Data
             });
         }
 
-        return BadRequest(new { message = domainEvents.Message });
+        return BadRequest(new { message = events.Message });
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateEventDto createEvent)
+    public async Task<IActionResult> Create(CreateEventInput input)
     {
-        var domainEvent = CreateEventMapper.ToDomain(createEvent);
+        var eventItem = await _eventUseCase.Create(input);
 
-        var eventItem = await _eventUseCase.Create(domainEvent);
-
-        if (eventItem.RequestSuccess == true)
+        if (eventItem.RequestSuccess)
         {
-            var dtoEvent = ReturnEventCreatedMapper.ToDto(eventItem.Data!);
-
             return Ok(new
             {
                 message = eventItem.Message,
-                data = dtoEvent
+                data = eventItem.Data
             });
         }
 
@@ -95,20 +84,16 @@ public class EventController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateEventDto updateEvent)
+    public async Task<IActionResult> Update(UpdateEventInput updateEvent)
     {
-        var domainEvent = UpdateEventMapper.ToDomain(updateEvent);
+        var eventItem = await _eventUseCase.Update(updateEvent);
 
-        var eventItem = await _eventUseCase.Update(domainEvent);
-
-        if (eventItem.RequestSuccess == true)
+        if (eventItem.RequestSuccess)
         {
-            var dtoEvent = ReturnEventMapper.ToDto(eventItem.Data!);
-
             return Ok(new
             {
                 message = eventItem.Message,
-                data = dtoEvent
+                data = eventItem.Data
             });
         }
 
@@ -118,19 +103,17 @@ public class EventController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-         var deletedEvent = await _eventUseCase.Delete(id);
+         var eventItem = await _eventUseCase.Delete(id);
 
-         if (deletedEvent.RequestSuccess == true)
+         if (eventItem.RequestSuccess)
          {
             return Ok(new
             {
-                message = deletedEvent.Message,
-                data = deletedEvent.Data
+                message = eventItem.Message,
+                data = eventItem.Data
             });
          }
 
-         return BadRequest(new { message = deletedEvent.Message });
+         return BadRequest(new { message = eventItem.Message });
     }
-
-
 }

@@ -1,13 +1,14 @@
-﻿using Domain.Entities;
+﻿using Application.UseCases.Event.Inputs;
+using Application.UseCases.Event.Outputs;
 using Result;
 
-namespace Domain.Ports.In;
+namespace Application.Ports.In;
 public interface IEventUseCase
 {
-    Task<Result<IEnumerable<Event>>> GetAll();
-    Task<Result<Event>> GetById(int id);
-    Task<Result<IEnumerable<Event>>> GetByUserId(int userId);
-    Task<Result<Event>> Create(Event createEvent);
-    Task<Result<Event>> Update(Event updateEvent);
-    Task<Result<Event>> Delete(int id);
+    Task<Result<IEnumerable<DetailedEventOutput>>> Get();
+    Task<Result<DetailedEventOutput>> GetById(int id);
+    Task<Result<IEnumerable<DetailedEventOutput>>> GetByUserId(int userId);
+    Task<Result<DefaultEventOutput>> Create(CreateEventInput input);
+    Task<Result<DefaultEventOutput>> Update(UpdateEventInput updateEvent);
+    Task<Result<DefaultEventOutput>> Delete(int id);
 }
