@@ -23,16 +23,16 @@ public sealed class Event
         OwnerUserId = ownerUserId;
         CreatedAt = DateTime.UtcNow;
     }
-    public static Event Create(string name, string description, string location, DateTime startDate, int ownerUserId)
+    public static Event CreateEvent(string name, string description, string location, DateTime startDate, int ownerUserId)
     {
-        Validate(name, startDate);
+        Validate(name, ownerUserId, startDate);
 
         return new Event(name, description, location, startDate, ownerUserId);
     }
 
-    public void Update(string name, string description, string location, DateTime startDate)
+    public void UpdateEvent(string name, string description, int ownerUserId, string location, DateTime startDate)
     {
-        Validate(name, startDate);
+        Validate(name, ownerUserId, startDate);
 
         Name = name;
         Description = description;
@@ -41,12 +41,15 @@ public sealed class Event
         UpdatedAt = DateTime.UtcNow; 
     }
 
-    public static void Validate(string name, DateTime startDate)
+    public static void Validate(string name, int ownerUserId, DateTime startDate)
     {
         if(name is null || name.Length < 3)
             throw new ArgumentException("Name must be at least 3 characters long");
 
-        if(startDate < DateTime.Now)
+        if (ownerUserId <= 0)
+            throw new ArgumentException("Invalid owner");
+
+        if (startDate < DateTime.Now)
             throw new ArgumentException("StartDate cannot be in the past");
     }
 
