@@ -18,9 +18,7 @@ public sealed class EventCollaborator
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
-    [JsonIgnore]
     public Event Event { get; private set; }
-    [JsonIgnore]
     public Collaborator Collaborator { get; private set; }
 
     private EventCollaborator() { }
@@ -34,6 +32,11 @@ public sealed class EventCollaborator
         CollaboratorId = collaboratorId;
         Role = role;
         CreatedAt = DateTime.UtcNow;
+    }
+
+    public static EventCollaborator CreateEventCollaborator(int eventId, int collaboratorId, CollaboratorRole role)
+    {
+        return new EventCollaborator(eventId, collaboratorId, role);
     }
 
     public void UpdateRole(CollaboratorRole newRole)
