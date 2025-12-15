@@ -13,27 +13,34 @@ public sealed class Collaborator
     private Collaborator() { }
     private Collaborator(int userId, string name)
     {
-        Validate(name);
+        Validate(userId, name);
 
         UserId = userId;
         Name = name;
         CreatedAt = DateTime.UtcNow;
     }
 
-    public static Collaborator Create(int userId, string name)
+    public static Collaborator CreateCollaborator(int userId, string name)
     {
+        Validate(userId, name);
+
         return new Collaborator(userId, name);
     }
 
-    public void Update(int id, string name)
+    public void UpdateCollaborator(int userId, string name)
     {
+        Validate(userId, name);
+
         Name = name;
         UpdatedAt = DateTime.UtcNow;
     }
     
-    public static void Validate(string name)
+    public static void Validate(int userId, string name)
     {
-        if(name is null || name.Length < 3)
+        if (userId <= 0)
+            throw new ArgumentException("Invalid user id");
+
+        if (name is null || name.Length < 3)
             throw new ArgumentException("Name must be at least 3 characters long");
     }
 
