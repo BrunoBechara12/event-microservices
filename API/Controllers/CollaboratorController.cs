@@ -1,5 +1,4 @@
-﻿using API.Dto.CollaboratorDto;
-using API.Mappers.CollaboratorMapper;
+﻿using Application.UseCases.Collaborator.Inputs;
 using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,110 +8,112 @@ namespace API.Controllers;
 [ApiController]
 public class CollaboratorController : ControllerBase
 {
-    public readonly ICollaboratorUseCase _collaboratorUseCase;
+    private readonly ICollaboratorUseCase _collaboratorUseCase;
 
     public CollaboratorController(ICollaboratorUseCase collaboratorUseCase)
     {
         _collaboratorUseCase = collaboratorUseCase;
     }
 
-    [HttpGet("{eventId}")]
-    public async Task<IActionResult> GetByEvent(int eventId)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
     {
-        var domainCollaborator = await _collaboratorUseCase.GetByEventId(eventId);
+        var collaborator = await _collaboratorUseCase.GetById(id);
 
-        if (domainCollaborator.RequestSuccess == true)
+        if (collaborator.RequestSuccess)
         {
-            var dtoCollaborator = domainCollaborator.Data!.Select(ReturnCollaboratorMapper.ToDto).ToList();
-
             return Ok(new
             {
-                message = domainCollaborator.Message,
-                data = dtoCollaborator
+                message = collaborator.Message,
+                data = collaborator.Data
             });
         }
 
-        return BadRequest(new { message = domainCollaborator.Message });
+        return BadRequest(new { message = collaborator.Message });
+    }
+
+    [HttpGet("event/{eventId}")]
+    public async Task<IActionResult> GetByEvent(int eventId)
+    {
+        var collaborator = await _collaboratorUseCase.GetByEventId(eventId);
+
+        if (collaborator.RequestSuccess)
+        {
+            return Ok(new
+            {
+                message = collaborator.Message,
+                data = collaborator.Data
+            });
+        }
+
+        return BadRequest(new { message = collaborator.Message });
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateCollaboratorDto createCollaborator)
+    public async Task<IActionResult> Create(CreateCollaboratorInput input)
     {
-        var domainCollaborator = CreateCollaboratorMapper.ToCollaboratorDomain(createCollaborator);
+        var collaborator = await _collaboratorUseCase.Create(input);
 
-        var domainEventCollaborator = CreateCollaboratorMapper.ToEventCollaboratorDomain(createCollaborator, domainCollaborator.Id);
-
-        var collaboratorItem = await _collaboratorUseCase.Create(domainCollaborator, domainEventCollaborator);
-
-        if (collaboratorItem.RequestSuccess == true)
+        if (collaborator.RequestSuccess)
         {
-            var dtoCollaborator = ReturnCollaboratorCreatedMapper.ToDto(collaboratorItem.Data!);
-
             return Ok(new
             {
-                message = collaboratorItem.Message,
-                data = dtoCollaborator
+                message = collaborator.Message,
+                data = collaborator.Data
             });
         }
 
-        return BadRequest(new { message = collaboratorItem.Message });
-    }
-
-    [HttpPut("UpdateRole")]
-    public async Task<IActionResult> UpdateRole(UpdateCollaboratorRoleDto collaborator)
-    {
-        var domainCollaborator = UpdateCollaboratorRoleMapper.ToDomain(collaborator);
-
-        var collaboratorItem = await _collaboratorUseCase.UpdateRole(domainCollaborator);
-
-        if (collaboratorItem.RequestSuccess == true)
-        {
-            var dtoCollaborator = ReturnCollaboratorRoleUpdatedMapper.ToDto(collaboratorItem.Data!);
-
-            return Ok(new
-            {
-                message = collaboratorItem.Message,
-                data = dtoCollaborator
-            });
-        }
-
-        return BadRequest(new { message = collaboratorItem.Message });
+        return BadRequest(new { message = collaborator.Message });
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateCollaborator(UpdateCollaboratorDto collaborator)
+    public async Task<IActionResult> Update(UpdateCollaboratorInput input)
     {
-        var domainCollaborator = UpdateCollaboratorMapper.ToDomain(collaborator);
+        var collaborator = await _collaboratorUseCase.Update(input);
 
-        var collaboratorItem = await _collaboratorUseCase.UpdateCollaborator(domainCollaborator);
-
-        if (collaboratorItem.RequestSuccess == true)
+        if (collaborator.RequestSuccess)
         {
-            var dtoCollaborator = ReturnCollaboratorUpdatedMapper.ToDto(collaboratorItem.Data!);
-
             return Ok(new
             {
-                message = collaboratorItem.Message,
-                data = dtoCollaborator
+                message = collaborator.Message,
+                data = collaborator.Data
             });
         }
 
-        return BadRequest(new { message = collaboratorItem.Message });
+        return BadRequest(new { message = collaborator.Message });
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> Delete(int collaboratorId, int eventId)
+    [HttpPost("AddToEvent")]
+    public async Task<IActionResult> AddToEvent(AddCollaboratorToEventInput input)
     {
-        var deletedCollaborator = await _collaboratorUseCase.Remove(collaboratorId, eventId);
+        var collaborator = await _collaboratorUseCase.AddToEvent(input);
 
-        if (deletedCollaborator.RequestSuccess == true)
+        if (collaborator.RequestSuccess)
         {
             return Ok(new
             {
-                message = deletedCollaborator.Message
+                message = collaborator.Message,
+                data = collaborator.Data
             });
         }
 
-        return BadRequest(new { message = deletedCollaborator.Message });
+        return BadRequest(new { message = collaborator.Message });
+    }
+
+    [HttpDelete("RemoveFromEvent")]
+    public async Task<IActionResult> RemoveFromEvent(RemoveCollaboratorFromEventInput input)
+    {
+        var collaborator = await _collaboratorUseCase.RemoveFromEvent(input);
+
+        if (collaborator.RequestSuccess)
+        {
+            return Ok(new
+            {
+                message = collaborator.Message,
+                data = collaborator.Data
+            });
+        }
+
+        return BadRequest(new { message = collaborator.Message });
     }
 }

@@ -1,13 +1,17 @@
-﻿using Domain.Entities;
+﻿using Application.UseCases.Collaborator.Inputs;
+using Application.UseCases.Collaborator.Outputs;
+using Domain.Entities;
 using Domain.Ports.In;
 using Domain.Ports.Output;
 using Result;
+using static Domain.Entities.Collaborator;
 
 namespace Application.UseCases;
+
 public class CollaboratorUseCase : ICollaboratorUseCase
 {
-    public readonly ICollaboratorRepository _collaboratorRepository;
-    public readonly IEventRepository _eventRepository;
+    private readonly ICollaboratorRepository _collaboratorRepository;
+    private readonly IEventRepository _eventRepository;
 
     public CollaboratorUseCase(ICollaboratorRepository collaboratorRepository, IEventRepository eventRepository)
     {
@@ -15,60 +19,106 @@ public class CollaboratorUseCase : ICollaboratorUseCase
         _eventRepository = eventRepository;
     }
 
-    public async Task<Result<IEnumerable<EventCollaborator>>> GetByEventId(int eventId)
+    public async Task<Result<DetailedCollaboratorOutput>> GetById(int id)
     {
+        var collaborator = await _collaboratorRepository.GetById(id);
+
+        var collaboratorOutput = collaborator?.ToDetailedCollaboratorOutput();
+
+        if (collaborator == null)
+        {
+            return Result<DetailedCollaboratorOutput>.Success(collaboratorOutput, "Collaborator not found.");
+        }
+
+        return Result<DetailedCollaboratorOutput>.Success(collaboratorOutput, "Collaborator found with success!");
+    }
+
+    public async Task<Result<IEnumerable<DetailedCollaboratorOutput>>> GetByEventId(int eventId)
+    {
+        var eventExists = await _eventRepository.GetById(eventId);
+        if (eventExists == null)
+        {
+            return Result<IEnumerable<DetailedCollaboratorOutput>>.Failure("Event not found.");
+        }
+
         var collaborators = await _collaboratorRepository.GetByEventId(eventId);
 
-        if (collaborators.Count() == 0)
+        var collaboratorOutput = collaborators.Select(c => c.Collaborator.ToDetailedCollaboratorOutput()!);
+
+        if (!collaborators.Any())
         {
-            return Result<IEnumerable<EventCollaborator>>.Success(collaborators, "No collaborators found.");
+            return Result<IEnumerable<DetailedCollaboratorOutput>>.Success(collaboratorOutput, "No collaborators found for this event.");
         }
 
-        return Result<IEnumerable<EventCollaborator>>.Success(collaborators, "Collaborators found with success!");
+        return Result<IEnumerable<DetailedCollaboratorOutput>>.Success(collaboratorOutput, "Collaborators found with success!");
     }
 
-    public async Task<Result<Collaborator>> Create(Collaborator collaborator, EventCollaborator eventCollaborator)
+    public async Task<Result<DefaultCollaboratorOutput>> Create(CreateCollaboratorInput input)
     {
-        var createdCollaborator = await _collaboratorRepository.Create(collaborator, eventCollaborator);
+        var newCollaborator = CreateCollaborator(input.UserId, input.Name);
 
-        return Result<Collaborator>.Success(createdCollaborator, "Collaborator created with success!");
+        var createdCollaborator = await _collaboratorRepository.Create(newCollaborator);
+
+        var collaboratorOutput = createdCollaborator.ToDefaultCollaboratorOutput();
+
+        return Result<DefaultCollaboratorOutput>.Success(collaboratorOutput!, "Collaborator created with success!");
     }
 
-    public async Task<Result<Collaborator>> Remove(int collaboratorId, int eventId)
+    public async Task<Result<DefaultCollaboratorOutput>> Update(UpdateCollaboratorInput input)
     {
-        var eventItem = await _eventRepository.GetById(eventId);
-        if(eventItem == null)
-            return Result<Collaborator>.Failure("Event not found.");
-
-        var removedCollaborator = await _collaboratorRepository.Remove(collaboratorId, eventId);
-
-        if(removedCollaborator == null)
-            return Result<Collaborator>.Failure("Collaborator is not in this event.");
-
-        return Result<Collaborator>.Success(null, "Collaborator removed with success!");
-    }
-
-    public async Task<Result<EventCollaborator>> UpdateRole(EventCollaborator eventCollaborator)
-    {
-        var collaboratorItem = await _collaboratorRepository.UpdateRole(eventCollaborator);
+        var collaboratorItem = await _collaboratorRepository.GetById(input.Id);
 
         if (collaboratorItem == null)
         {
-            return Result<EventCollaborator>.Failure("Collaborator not found.");
+            return Result<DefaultCollaboratorOutput>.Failure("Collaborator not found.");
         }
 
-        return Result<EventCollaborator>.Success(collaboratorItem, "Collaborator role updated with success!");
+        collaboratorItem.UpdateCollaborator(input.UserId, input.Name);
+
+        await _collaboratorRepository.Update(collaboratorItem);
+
+        var collaboratorOutput = collaboratorItem.ToDefaultCollaboratorOutput();
+
+        return Result<DefaultCollaboratorOutput>.Success(collaboratorOutput!, "Collaborator updated with success!");
     }
 
-    public async Task<Result<Collaborator>> UpdateCollaborator(Collaborator eventCollaborator)
+    public async Task<Result<DefaultCollaboratorOutput>> AddToEvent(AddCollaboratorToEventInput input)
     {
-        var collaboratorItem = await _collaboratorRepository.UpdateCollaborator(eventCollaborator);
+        var collaborator = await _collaboratorRepository.GetById(input.CollaboratorId);
+        if (collaborator == null)
+            return Result<DefaultCollaboratorOutput>.Failure("Collaborator not found.");
 
-        if (collaboratorItem == null)
-        {
-            return Result<Collaborator>.Failure("Collaborator not found.");
-        }
+        var eventItem = await _eventRepository.GetById(input.EventId);
+        if (eventItem == null)
+            return Result<DefaultCollaboratorOutput>.Failure("Event not found.");
 
-        return Result<Collaborator>.Success(collaboratorItem, "Collaborator updated with success!");
+        var isAlreadyLinked = await _collaboratorRepository.IsCollaboratorInEvent(input.CollaboratorId, input.EventId);
+        if (isAlreadyLinked)
+            return Result<DefaultCollaboratorOutput>.Failure("Collaborator is already in this event.");
+
+        var eventCollaborator = EventCollaborator.CreateEventCollaborator(input.EventId, input.CollaboratorId, input.Role);
+
+        await _collaboratorRepository.AddToEvent(eventCollaborator);
+
+        return Result<DefaultCollaboratorOutput>.Success(collaborator.ToDefaultCollaboratorOutput()!, "Collaborator added to event with success!");
+    }
+
+    public async Task<Result<DefaultCollaboratorOutput>> RemoveFromEvent(RemoveCollaboratorFromEventInput input)
+    {
+        var collaborator = await _collaboratorRepository.GetById(input.CollaboratorId);
+        if (collaborator == null)
+            return Result<DefaultCollaboratorOutput>.Failure("Collaborator not found.");
+
+        var eventItem = await _eventRepository.GetById(input.EventId);
+        if (eventItem == null)
+            return Result<DefaultCollaboratorOutput>.Failure("Event not found.");
+
+        var isLinked = await _collaboratorRepository.IsCollaboratorInEvent(input.CollaboratorId, input.EventId);
+        if (!isLinked)
+            return Result<DefaultCollaboratorOutput>.Failure("Collaborator is not linked to this event.");
+
+        await _collaboratorRepository.RemoveFromEvent(input.CollaboratorId, input.EventId);
+
+        return Result<DefaultCollaboratorOutput>.Success(null, "Collaborator removed from event with success!");
     }
 }
