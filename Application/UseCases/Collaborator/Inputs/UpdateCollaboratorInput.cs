@@ -2,6 +2,6 @@
 public record UpdateCollaboratorInput
 (
     int Id,
-    string Name,
-    int UserId 
+    int UserId,
+    string Name
 );
