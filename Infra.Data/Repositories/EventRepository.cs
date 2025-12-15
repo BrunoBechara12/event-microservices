@@ -13,7 +13,7 @@ public class EventRepository : IEventRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Event>> GetAll()
+    public async Task<IEnumerable<Event>> Get()
     {
         var events = await _context.Events.ToListAsync();
 
@@ -22,9 +22,9 @@ public class EventRepository : IEventRepository
 
     public async Task<Event?> GetById(int id)
     {
-        var events = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
+        var eventItem = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
 
-        return events;
+        return eventItem;
     }
     
     public async Task<IEnumerable<Event>> GetByUserId(int userId)
@@ -36,42 +36,24 @@ public class EventRepository : IEventRepository
 
     public async Task<Event> Create(Event createEvent)
     {
-        var eventItem = _context.Events.AddAsync(createEvent);
+        var eventCreated = await _context.Events.AddAsync(createEvent);
+
         await _context.SaveChangesAsync();
 
-        return eventItem.Result.Entity;
+        return eventCreated.Entity;
     }
 
-    public async Task<Event> Update(Event updateEvent)
+    public async Task Update(Event updateEvent)
     {
-
-        var eventItem = _context.Events.FirstOrDefault(a => a.Id == updateEvent.Id);
-
-        if (eventItem == null)
-            return null;
-
-        eventItem.Name = updateEvent.Name;
-        eventItem.Description = updateEvent.Description;
-        eventItem.Location = updateEvent.Location;
-        eventItem.StartDate = updateEvent.StartDate;
-        eventItem.OwnerUserId = updateEvent.OwnerUserId;
-        eventItem.UpdatedAt = DateTime.UtcNow;
+        _context.Events.Update(updateEvent);
 
         await _context.SaveChangesAsync();
-
-        return eventItem;
     }
 
-    public async Task<Event> Delete(int id)
+    public async Task Delete(Event eventItem)
     {
-        var deletedEvent = _context.Events.FirstOrDefault(a => a.Id == id);
+        _context.Events.Remove(eventItem);
 
-        if (deletedEvent == null)
-            return null;
-
-        _context.Events.Remove(deletedEvent);
         await _context.SaveChangesAsync();
-
-        return deletedEvent;
     }
 }
