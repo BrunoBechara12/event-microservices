@@ -1,9 +1,10 @@
 ﻿using CollaboratorEntity = Domain.Entities.Collaborator;
 
 namespace Application.UseCases.Collaborator.Outputs;
-internal class CollaboratorExtensions
+
+public static class CollaboratorExtensions
 {
-    public static DefaultCollaboratorOutput? ToEventOutput(CollaboratorEntity entity)
+    public static DefaultCollaboratorOutput? ToDefaultCollaboratorOutput(this CollaboratorEntity entity)
     {
         if (entity == null) return null;
 
@@ -13,7 +14,7 @@ internal class CollaboratorExtensions
         );
     }
 
-    public static DetailedCollaboratorOutput? ToDetailedEventOutput(CollaboratorEntity entity)
+    public static DetailedCollaboratorOutput? ToDetailedCollaboratorOutput(this CollaboratorEntity entity)
     {
         if (entity == null) return null;
 
