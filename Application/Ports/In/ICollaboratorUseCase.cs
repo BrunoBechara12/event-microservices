@@ -2,7 +2,7 @@
 using Application.UseCases.Collaborator.Outputs;
 using Result;
 
-namespace Domain.Ports.In;
+namespace Application.Ports.In;
 public interface ICollaboratorUseCase
 {
     Task<Result<DetailedCollaboratorOutput>> GetById(int id);

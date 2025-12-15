@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Application.Ports.In;
 
-namespace API.Controllers;
+namespace Adapters.Primary.API.Controllers;
 
 [Route("api/events")]
 [ApiController]

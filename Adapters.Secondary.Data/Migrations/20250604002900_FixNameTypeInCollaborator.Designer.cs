@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infra.Data.Migrations
+namespace Adapters.Secondary.Data.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    [Migration("20250603224409_MoveRoleToEventCollaborator")]
-    partial class MoveRoleToEventCollaborator
+    [Migration("20250604002900_FixNameTypeInCollaborator")]
+    partial class FixNameTypeInCollaborator
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,8 +36,9 @@ namespace Infra.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");

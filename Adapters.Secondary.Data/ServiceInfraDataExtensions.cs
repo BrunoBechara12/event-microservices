@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infra.Data;
+namespace Adapters.Secondary.Data;
 public static class ServiceInfraDataExtensions
 {
     public static IServiceCollection AddDataBaseService(this IServiceCollection services, IConfiguration configuration)

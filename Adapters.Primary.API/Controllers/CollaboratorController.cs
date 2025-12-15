@@ -1,8 +1,8 @@
 ﻿using Application.UseCases.Collaborator.Inputs;
-using Domain.Ports.In;
+using Application.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers;
+namespace Adapters.Primary.API.Controllers;
 
 [Route("api/collaborators")]
 [ApiController]

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Infra.Data.Migrations
+namespace Adapters.Secondary.Data.Migrations
 {
     /// <inheritdoc />
     public partial class FixNameTypeInCollaborator : Migration

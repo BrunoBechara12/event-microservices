@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infra.Data.Migrations
+namespace Adapters.Secondary.Data.Migrations
 {
     /// <inheritdoc />
     public partial class MoveRoleToEventCollaborator : Migration

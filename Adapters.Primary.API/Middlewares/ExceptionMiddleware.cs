@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace API.Middlewares;
+namespace Adapters.Primary.API.Middlewares;
 
 public class ExceptionMiddleware
 {
