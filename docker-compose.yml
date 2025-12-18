@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  events.database:
+    image: postgres:15-alpine
+    container_name: events.database
+    environment:
+      - POSTGRES_DB=events
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+       - ./.containers/events-db:/var/lib/postgresql/data
+    ports:
+       - "5432:5432"
+  events.api:
+    image: ${DOCKER_REGISTRY-} eventsapi
+    container_name: events.api
+    build:
+      context: .
+      dockerfile: Adapters.Primary.API/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001" 
+
+  
+      
+    
