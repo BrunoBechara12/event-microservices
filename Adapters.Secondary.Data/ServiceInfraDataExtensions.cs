@@ -13,7 +13,7 @@ public static class ServiceInfraDataExtensions
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<EventDbContext>(options =>
-            options.UseSqlServer(connectionString));
+            options.UseNpgsql(connectionString));
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<ICollaboratorRepository, CollaboratorRepository>();
         return services;
