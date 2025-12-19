@@ -1,5 +1,6 @@
 ﻿using Application.Ports.In;
-using Application.UseCases;
+using Application.UseCases.Collaborator;
+using Application.UseCases.Event;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;

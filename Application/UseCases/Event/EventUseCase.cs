@@ -5,7 +5,7 @@ using Result;
 using Application.Ports.In;
 using static Domain.Entities.Event;
 
-namespace Application.UseCases;
+namespace Application.UseCases.Event;
 public class EventUseCase : IEventUseCase
 {
     private readonly IEventRepository _eventRepository;

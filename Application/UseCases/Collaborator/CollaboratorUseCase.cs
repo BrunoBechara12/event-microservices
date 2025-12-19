@@ -6,7 +6,7 @@ using Domain.Ports.Output;
 using Result;
 using static Domain.Entities.Collaborator;
 
-namespace Application.UseCases;
+namespace Application.UseCases.Collaborator;
 
 public class CollaboratorUseCase : ICollaboratorUseCase
 {
