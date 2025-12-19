@@ -21,6 +21,11 @@ public class EventUseCase : IEventUseCase
 
         var eventOutput = events.Select(e => e.ToDetailedEventOutput());
 
+        if(!eventOutput.Any())
+        {
+            return Result<IEnumerable<DetailedEventOutput>>.Success(eventOutput, "No events found.");
+        }
+
         return Result<IEnumerable<DetailedEventOutput>>.Success(eventOutput, "Events found with success!");
     }
     public async Task<Result<DetailedEventOutput>> GetById(int id)
@@ -52,7 +57,7 @@ public class EventUseCase : IEventUseCase
 
     public async Task<Result<DefaultEventOutput>> Create(CreateEventInput input)
     {
-        var newEvent = CreateEvent(
+        var newEvent = CreateEvent( 
             input.Name, 
             input.Description, 
             input.Location, 
