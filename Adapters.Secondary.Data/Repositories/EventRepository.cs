@@ -15,23 +15,17 @@ public class EventRepository : IEventRepository
 
     public async Task<IEnumerable<Event>> Get()
     {
-        var events = await _context.Events.ToListAsync();
-
-        return events;
+        return await _context.Events.ToListAsync();
     }
 
     public async Task<Event?> GetById(int id)
     {
-        var eventItem = await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
-
-        return eventItem;
+        return await _context.Events.Where(x => x.Id == id).FirstOrDefaultAsync();
     }
     
     public async Task<IEnumerable<Event>> GetByUserId(int userId)
     {
-        var events = await _context.Events.Where(x => x.OwnerUserId == userId).ToListAsync();
-
-        return events;
+        return await _context.Events.Where(x => x.OwnerUserId == userId).ToListAsync();
     }
 
     public async Task<Event> Create(Event createEvent)
