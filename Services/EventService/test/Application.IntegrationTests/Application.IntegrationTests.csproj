@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Collaborator\**" />
+    <EmbeddedResource Remove="Collaborator\**" />
+    <None Remove="Collaborator\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="FluentAssertions" Version="8.8.0" />
     <PackageReference Include="MediatR" Version="14.0.0" />
@@ -23,17 +29,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Adapters.Primary.API\Adapters.Primary.API.csproj" />
-    <ProjectReference Include="..\..\Adapters.Secondary.Data\Adapters.Secondary.Data.csproj" />
-    <ProjectReference Include="..\..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\src\Adapters.Primary.API\Adapters.Primary.API.csproj" />
+    <ProjectReference Include="..\..\src\Adapters.Secondary.Data\Adapters.Secondary.Data.csproj" />
+    <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Collaborator\" />
   </ItemGroup>
 
 </Project>

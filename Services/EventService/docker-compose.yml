@@ -13,11 +13,11 @@ services:
     ports:
        - "5432:5432"
   events.api:
-    image: ${DOCKER_REGISTRY-} eventsapi
+    image: ${DOCKER_REGISTRY-}eventsapi
     container_name: events.api
     build:
       context: .
-      dockerfile: Adapters.Primary.API/Dockerfile
+      dockerfile: src/Adapters.Primary.API/Dockerfile
     ports:
       - "5000:5000"
       - "5001:5001" 
