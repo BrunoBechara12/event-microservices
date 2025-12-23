@@ -31,6 +31,7 @@ public sealed class Collaborator
     {
         Validate(userId, name);
 
+        UserId = userId;
         Name = name;
         UpdatedAt = DateTime.UtcNow;
     }
