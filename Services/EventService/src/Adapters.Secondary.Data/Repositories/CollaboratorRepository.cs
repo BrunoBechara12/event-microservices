@@ -42,6 +42,12 @@ public class CollaboratorRepository : ICollaboratorRepository
 
         await _context.SaveChangesAsync();
     }
+    public async Task Delete(Collaborator collaborator)
+    {
+        _context.Collaborators.Remove(collaborator);
+
+        await _context.SaveChangesAsync();
+    }
 
     public async Task<bool> IsCollaboratorInEvent(int collaboratorId, int eventId)
     {

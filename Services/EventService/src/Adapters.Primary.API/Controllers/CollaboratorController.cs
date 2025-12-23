@@ -83,6 +83,23 @@ public class CollaboratorController : ControllerBase
         return BadRequest(new { message = collaborator.Message });
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var collaborator = await _collaboratorUseCase.Delete(id);
+
+        if (collaborator.RequestSuccess)
+        {
+            return Ok(new
+            {
+                message = collaborator.Message,
+                data = collaborator.Data
+            });
+        }
+
+        return BadRequest(new { message = collaborator.Message });
+    }
+
     [HttpPost("AddToEvent")]
     public async Task<IActionResult> AddToEvent(AddCollaboratorToEventInput input)
     {

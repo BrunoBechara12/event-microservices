@@ -82,6 +82,20 @@ public class CollaboratorUseCase : ICollaboratorUseCase
         return Result<DefaultCollaboratorOutput>.Success(collaboratorOutput!, "Collaborator updated with success!");
     }
 
+    public async Task<Result<DefaultCollaboratorOutput>> Delete(int id)
+    {
+        var collaborator = await _collaboratorRepository.GetById(id);
+
+        if (collaborator == null)
+        {
+            return Result<DefaultCollaboratorOutput>.Failure("Collaborator not found.");
+        }
+
+        await _collaboratorRepository.Delete(collaborator);
+
+        return Result<DefaultCollaboratorOutput>.Success(null, "Collaborator deleted with success!");
+    }
+
     public async Task<Result<DefaultCollaboratorOutput>> AddToEvent(AddCollaboratorToEventInput input)
     {
         var collaborator = await _collaboratorRepository.GetById(input.CollaboratorId);
