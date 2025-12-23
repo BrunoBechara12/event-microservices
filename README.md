@@ -1,7 +1,5 @@
 ## Sistema de gerenciamento de eventos baseado em microsserviços e arquitetura hexagonal, desenvolvido em .NET.
 
-⚠️ Projeto em fase inicial de desenvolvimento. Atualizações serão compartilhadas regularmente.
-
 ## Arquitetura
 
 O projeto é composto por microsserviços independentes, cada um com sua própria responsabilidade, seguindo os princípios da arquitetura hexagonal para garantir alto desacoplamento e testabilidade.
@@ -12,9 +10,10 @@ O projeto é composto por microsserviços independentes, cada um com sua própri
 - **AuthService**: Autenticação e autorização com JWT
 - **GuestService**: Gerenciamento de convidados e suas respostas
 - **NotificationService**: Envio de convites via WhatsApp
-- **PaymentService**: Processamento de pagamentos para planos premium
+- **API Gateway**: Ponto de entrada único para todos os serviços, gerenciando roteamento, autenticação e rate limiting
 
-## Tecnologias Principais
+
+### Tecnologias Principais
 
 - **.NET Core**: Framework para desenvolvimento dos microsserviços
 - **Arquitetura Hexagonal**: Design pattern que separa as camadas de aplicação
@@ -22,10 +21,37 @@ O projeto é composto por microsserviços independentes, cada um com sua própri
 - **Docker**: Containerização de todos os serviços
 - **JWT**: Autenticação e autorização entre serviços
 
+### Testes
+- **xUnit**: Framework de testes unitários e de integração
+- **Testcontainers**: Testes de integração com containers reais (PostgreSQL, RabbitMQ)
+- **TDD (Test-Driven Development)**: Desenvolvimento guiado por testes
+- **Respawn**: Reset de banco de dados entre testes
+- **FluentAssertions**: Assertions expressivas para testes
+
 ## Funcionalidades
 
 - Criação e gerenciamento de eventos
 - Envio de convites em massa via WhatsApp
 - Acompanhamento de confirmações/recusas em tempo real
-- Plano premium com importação de contatos via planilha
-- Gateway de pagamento para assinaturas premium
+
+## Como Começar
+
+### Pré-requisitos
+- Docker & Docker Compose
+
+### Executando o Projeto
+```bash
+# Clone o repositório
+git clone [url-do-repositorio]
+
+# Navegue até um serviço específico
+cd Services/EventService
+
+# Suba os containers
+docker-compose up -d --build
+
+# Execute os testes
+dotnet test
+```
+
+
