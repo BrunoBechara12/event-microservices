@@ -30,6 +30,23 @@ public class UpdateEventTests : BaseIntegrationTest
     }
 
     [Fact]
+    public async Task Update_ShouldReturnFailure_WhenEventDoesNotExist()
+    {
+        // Arrange
+        var updateInput = new UpdateEventInput(9999, "Event edited", "Description", "Location", DateTime.UtcNow.AddDays(2), 1);
+
+        // Act
+        var result = await EventUseCase.Update(updateInput);
+
+        // Assert
+        result.RequestSuccess.Should().BeFalse();
+        result.Message.Should().Be("Event not found.");
+
+        var exists = await DbContext.Events.AnyAsync(c => c.Id == updateInput.Id);
+        exists.Should().BeFalse();
+    }
+
+    [Fact]
     public async Task Update_ShouldThrowArgumentException_WhenNameIsTooShort()
     {
         //Arrange

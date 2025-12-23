@@ -45,7 +45,6 @@ public class GetEventTests : BaseIntegrationTest
     public async Task GetById_ShouldReturnEvent_WhenEventExists()
     {
         // Arrange
-        // 1. Precisamos criar um evento no banco primeiro para poder buscar
         var input = new CreateEventInput("Event 1", "Description", "Street 1", DateTime.UtcNow.AddDays(5), 10);
         var createResult = await EventUseCase.Create(input);
         var createdId = createResult.Data!.Id;

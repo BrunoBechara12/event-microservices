@@ -34,4 +34,20 @@ public class DeleteEventTests : BaseIntegrationTest
         resultGetAfterDelete.Should().BeNull();
     }
 
+    [Fact]
+    public async Task Delete_ShouldReturnFailure_WhenEventDoesNotExist()
+    {
+        var fakeId = 2;
+
+        // Act
+        var result = await EventUseCase.Delete(fakeId);
+
+        //Assert 
+        result.RequestSuccess.Should().BeFalse();
+        result.Message.Should().Be("Event not found.");
+
+        var exists = await DbContext.Events.AnyAsync(c => c.Id == fakeId);
+        exists.Should().BeFalse();
+    }
+
 }
