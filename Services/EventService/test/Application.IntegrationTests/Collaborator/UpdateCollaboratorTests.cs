@@ -1,8 +1,9 @@
-﻿using Application.UseCases.Collaborator.Inputs;
+﻿using Application.IntegrationTests;
+using Application.UseCases.Collaborator.Inputs;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.IntegrationTests.Collaborator;
+namespace Tests.Collaborator;
 public class UpdateCollaboratorTests : BaseIntegrationTest
 {
     public UpdateCollaboratorTests(IntegrationTestFactory factory) : base(factory)

@@ -1,8 +1,9 @@
-﻿using Application.UseCases.Collaborator.Inputs;
+﻿using Application.IntegrationTests;
+using Application.UseCases.Collaborator.Inputs;
 using Application.UseCases.Event.Inputs;
 using FluentAssertions;
 
-namespace Application.IntegrationTests.Collaborator;
+namespace Tests.Collaborator;
 public class GetCollaboratorTests : BaseIntegrationTest
 {
     public GetCollaboratorTests(IntegrationTestFactory factory) : base(factory)

@@ -1,8 +1,9 @@
-﻿using Application.UseCases.Event.Inputs;
+﻿using Application.IntegrationTests;
+using Application.UseCases.Event.Inputs;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.IntegrationTests.Event;
+namespace Tests.Event;
 public class UpdateEventTests : BaseIntegrationTest
 {
     public UpdateEventTests(IntegrationTestFactory factory)

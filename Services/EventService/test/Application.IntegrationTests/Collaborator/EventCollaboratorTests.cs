@@ -1,10 +1,11 @@
-﻿using Application.UseCases.Collaborator.Inputs;
+﻿using Application.IntegrationTests;
+using Application.UseCases.Collaborator.Inputs;
 using Application.UseCases.Event.Inputs;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using static Domain.Entities.EventCollaborator;
 
-namespace Application.IntegrationTests.Collaborator;
+namespace Tests.Collaborator;
 public class EventCollaboratorTests : BaseIntegrationTest
 {
     public EventCollaboratorTests(IntegrationTestFactory factory) : base(factory)
@@ -90,12 +91,12 @@ public class EventCollaboratorTests : BaseIntegrationTest
     public async Task RemoveFromEvent_ShouldUnlinkCollaborator_WhenLinked()
     {
         // Arrange
-        var eventResult = await EventUseCase.Create(new CreateEventInput("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
+        var eventResult = await EventUseCase.Create(new CreateEventInput("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 4));
         var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorInput(1, "John"));
 
-        await CollaboratorUseCase.AddToEvent(new AddCollaboratorToEventInput(eventResult.Data!.Id, collabResult.Data!.Id, CollaboratorRole.Inviter));
+        await CollaboratorUseCase.AddToEvent(new AddCollaboratorToEventInput(collabResult.Data!.Id, eventResult.Data!.Id, CollaboratorRole.Inviter));
 
-        var removeInput = new RemoveCollaboratorFromEventInput(eventResult.Data.Id, collabResult.Data.Id);
+        var removeInput = new RemoveCollaboratorFromEventInput(collabResult.Data.Id, eventResult.Data.Id);
 
         // Act
         var result = await CollaboratorUseCase.RemoveFromEvent(removeInput);

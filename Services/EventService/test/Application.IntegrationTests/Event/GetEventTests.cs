@@ -1,7 +1,8 @@
-﻿using Application.UseCases.Event.Inputs;
+﻿using Application.IntegrationTests;
+using Application.UseCases.Event.Inputs;
 using FluentAssertions;
 
-namespace Application.IntegrationTests.Event;
+namespace Tests.Event;
 public class GetEventTests : BaseIntegrationTest
 {
     public GetEventTests(IntegrationTestFactory factory)
