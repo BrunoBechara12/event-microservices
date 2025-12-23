@@ -9,6 +9,8 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestFactory
     private readonly IServiceScope _scope;
     protected readonly IEventRepository EventRepository;
     protected readonly IEventUseCase EventUseCase;
+    protected readonly ICollaboratorRepository CollaboratorRepository;
+    protected readonly ICollaboratorUseCase CollaboratorUseCase;
     protected readonly EventDbContext DbContext; 
 
     protected BaseIntegrationTest(IntegrationTestFactory factory)
@@ -19,6 +21,9 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestFactory
 
         EventRepository = _scope.ServiceProvider.GetRequiredService<IEventRepository>();
         EventUseCase = _scope.ServiceProvider.GetRequiredService<IEventUseCase>();
+
+        CollaboratorRepository = _scope.ServiceProvider.GetRequiredService<ICollaboratorRepository>();
+        CollaboratorUseCase = _scope.ServiceProvider.GetRequiredService<ICollaboratorUseCase>();
 
         DbContext = _scope.ServiceProvider.GetRequiredService<EventDbContext>(); 
     }
