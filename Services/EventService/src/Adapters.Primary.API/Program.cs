@@ -24,6 +24,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "EventMicroservices v1");
+
+    options.ConfigObject.AdditionalItems["operationsSorter"] = "method";
+});
+
 app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
