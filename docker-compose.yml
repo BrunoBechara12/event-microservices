@@ -22,3 +22,24 @@ services:
       - "5000:5000"
       - "5001:5001" 
 
+  guests.database:
+    image: postgres:15-alpine
+    container_name: guests.database
+    environment:
+      - POSTGRES_DB=guests
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+       - ./.containers/guests-db:/var/lib/postgresql/data
+    ports:
+       - "5433:5432"
+  guests.api:
+    image: ${DOCKER_REGISTRY-}guestsapi
+    container_name: guests.api
+    build:
+      context: .
+      dockerfile: Services/GuestService/src/Adapters.Primary.API/Dockerfile
+    ports:
+      - "5002:5000"
+      - "5003:5001" 
+
