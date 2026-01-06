@@ -16,12 +16,9 @@ services:
     image: ${DOCKER_REGISTRY-}eventsapi
     container_name: events.api
     build:
-      context: ../../
+      context: ./
       dockerfile: Services/EventService/src/Adapters.Primary.API/Dockerfile
     ports:
       - "5000:5000"
       - "5001:5001" 
 
-  
-      
-    
