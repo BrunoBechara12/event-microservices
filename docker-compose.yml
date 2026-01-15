@@ -12,6 +12,7 @@ services:
        - ./.containers/events-db:/var/lib/postgresql/data
     ports:
        - "5432:5432"
+
   events.api:
     image: ${DOCKER_REGISTRY-}eventsapi
     container_name: events.api
@@ -20,7 +21,9 @@ services:
       dockerfile: Services/EventService/src/Adapters.Primary.API/Dockerfile
     ports:
       - "5000:5000"
-      - "5001:5001" 
+      - "5001:5001"
+    depends_on:
+      - events.database
 
   guests.database:
     image: postgres:15-alpine
@@ -33,13 +36,17 @@ services:
        - ./.containers/guests-db:/var/lib/postgresql/data
     ports:
        - "5433:5432"
+
   guests.api:
     image: ${DOCKER_REGISTRY-}guestsapi
     container_name: guests.api
     build:
-      context: .
+      context: ./
       dockerfile: Services/GuestService/src/Adapters.Primary.API/Dockerfile
     ports:
       - "5002:5000"
-      - "5003:5001" 
+      - "5003:5001"
+    depends_on:
+      - guests.database
+        
 
