@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Adapters.Secondary.Data.Context;
+namespace Adapters.Secondary.Context;
 public class GuestDbContext : DbContext
 {
     public GuestDbContext(DbContextOptions<GuestDbContext> options) : base(options)

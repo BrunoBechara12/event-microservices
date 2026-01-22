@@ -1,4 +1,4 @@
-﻿using Adapters.Secondary.Data.Context;
+﻿using Adapters.Secondary.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Adapters.Primary.API.Extensions;

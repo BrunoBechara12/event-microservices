@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/GuestService/src/Adapters.Primary.API/Adapters.Primary.API.csproj", "Services/GuestService/src/Adapters.Primary.API/"]
-COPY ["Services/GuestService/src/Adapters.Secondary.Data/Adapters.Secondary.Data.csproj", "Services/GuestService/src/Adapters.Secondary.Data/"]
+COPY ["Services/GuestService/src/Adapters.Secondary/Adapters.Secondary.csproj", "Services/GuestService/src/Adapters.Secondary/"]
 COPY ["Services/GuestService/src/Domain/Domain.csproj", "Services/GuestService/src/Domain/"]
 COPY ["Services/GuestService/src/Application/Application.csproj", "Services/GuestService/src/Application/"]
 COPY ["Shared/Shared.Common.csproj", "Shared/"]

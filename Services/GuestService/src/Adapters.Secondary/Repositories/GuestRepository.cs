@@ -1,9 +1,9 @@
-﻿using Adapters.Secondary.Data.Context;
+﻿using Adapters.Secondary.Context;
 using Domain.Entities;
-using Domain.Ports;
+using Domain.Ports.Output;
 using Microsoft.EntityFrameworkCore;
 
-namespace Adapters.Secondary.Data.Repositories;
+namespace Adapters.Secondary.Repositories;
 public class GuestRepository : IGuestRepository
 {
     private readonly GuestDbContext _context;
