@@ -1,9 +1,10 @@
-﻿using Application.UseCases.Event.Inputs;
-using Application.UseCases.Event.Outputs;
+﻿using Domain.Contracts.Event;
 using Domain.Ports.Output;
 using Result;
-using Application.Ports.In;
+using Domain.Ports.In;
 using static Domain.Entities.Event;
+using Domain.Contracts.Event.Inputs;
+using Domain.Contracts.Event.Outputs;
 
 namespace Application.UseCases.Event;
 public class EventUseCase : IEventUseCase

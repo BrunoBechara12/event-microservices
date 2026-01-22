@@ -1,4 +1,4 @@
-﻿namespace Application.UseCases.Collaborator.Outputs;
+namespace Domain.Contracts.Collaborator.Outputs;
 public record DefaultCollaboratorOutput
 (
     int Id,

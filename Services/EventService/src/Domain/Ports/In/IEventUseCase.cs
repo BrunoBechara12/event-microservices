@@ -1,8 +1,8 @@
-﻿using Application.UseCases.Event.Inputs;
-using Application.UseCases.Event.Outputs;
+using Domain.Contracts.Event.Inputs;
+using Domain.Contracts.Event.Outputs;
 using Result;
 
-namespace Application.Ports.In;
+namespace Domain.Ports.In;
 public interface IEventUseCase
 {
     Task<Result<IEnumerable<DetailedEventOutput>>> Get();

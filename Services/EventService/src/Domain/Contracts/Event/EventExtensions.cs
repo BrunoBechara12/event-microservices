@@ -1,6 +1,7 @@
-﻿using EventEntity = Domain.Entities.Event;
+using Domain.Contracts.Event.Outputs;
+using EventEntity = Domain.Entities.Event;
 
-namespace Application.UseCases.Event.Outputs;
+namespace Domain.Contracts.Event;
 
 public static class EventExtensions
 {

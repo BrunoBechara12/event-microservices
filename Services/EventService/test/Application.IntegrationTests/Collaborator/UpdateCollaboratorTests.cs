@@ -1,5 +1,5 @@
 ﻿using Application.IntegrationTests;
-using Application.UseCases.Collaborator.Inputs;
+using Domain.Contracts.Collaborator.Inputs;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 

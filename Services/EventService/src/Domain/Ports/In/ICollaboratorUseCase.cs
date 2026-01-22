@@ -1,8 +1,8 @@
-﻿using Application.UseCases.Collaborator.Inputs;
-using Application.UseCases.Collaborator.Outputs;
+using Domain.Contracts.Collaborator.Inputs;
+using Domain.Contracts.Collaborator.Outputs;
 using Result;
 
-namespace Application.Ports.In;
+namespace Domain.Ports.In;
 public interface ICollaboratorUseCase
 {
     Task<Result<DetailedCollaboratorOutput>> GetById(int id);

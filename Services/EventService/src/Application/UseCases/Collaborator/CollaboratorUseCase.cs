@@ -1,10 +1,11 @@
-﻿using Application.Ports.In;
-using Application.UseCases.Collaborator.Inputs;
-using Application.UseCases.Collaborator.Outputs;
+﻿using Domain.Ports.In;
+using Domain.Contracts.Collaborator;
 using Domain.Entities;
 using Domain.Ports.Output;
 using Result;
 using static Domain.Entities.Collaborator;
+using Domain.Contracts.Collaborator.Inputs;
+using Domain.Contracts.Collaborator.Outputs;
 
 namespace Application.UseCases.Collaborator;
 

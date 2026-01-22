@@ -1,4 +1,4 @@
-﻿namespace Application.UseCases.Event.Outputs;
+namespace Domain.Contracts.Event.Outputs;
 public record DefaultEventOutput
 (
     int Id,

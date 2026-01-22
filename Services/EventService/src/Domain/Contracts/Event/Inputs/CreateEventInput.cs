@@ -1,7 +1,6 @@
-﻿namespace Application.UseCases.Event.Inputs;
-public record UpdateEventInput
+namespace Domain.Contracts.Event.Inputs;
+public record CreateEventInput
 (
-    int Id,
     string Name,
     string Description,
     string Location,

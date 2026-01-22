@@ -1,5 +1,5 @@
-﻿using Application.UseCases.Collaborator.Inputs;
-using Application.Ports.In;
+﻿using Domain.Contracts.Collaborator.Inputs;
+using Domain.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Adapters.Primary.API.Controllers;

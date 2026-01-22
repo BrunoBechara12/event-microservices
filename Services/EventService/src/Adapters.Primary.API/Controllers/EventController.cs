@@ -1,6 +1,6 @@
-﻿using Application.UseCases.Event.Inputs;
-using Microsoft.AspNetCore.Mvc;
-using Application.Ports.In;
+﻿using Microsoft.AspNetCore.Mvc;
+using Domain.Ports.In;
+using Domain.Contracts.Event.Inputs;
 
 namespace Adapters.Primary.API.Controllers;
 

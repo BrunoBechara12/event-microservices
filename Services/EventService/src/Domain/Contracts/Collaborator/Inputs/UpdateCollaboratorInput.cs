@@ -1,4 +1,4 @@
-﻿namespace Application.UseCases.Collaborator.Inputs;
+namespace Domain.Contracts.Collaborator.Inputs;
 public record UpdateCollaboratorInput
 (
     int Id,

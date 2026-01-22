@@ -1,6 +1,7 @@
-﻿using CollaboratorEntity = Domain.Entities.Collaborator;
+using Domain.Contracts.Collaborator.Outputs;
+using CollaboratorEntity = Domain.Entities.Collaborator;
 
-namespace Application.UseCases.Collaborator.Outputs;
+namespace Domain.Contracts.Collaborator;
 
 public static class CollaboratorExtensions
 {

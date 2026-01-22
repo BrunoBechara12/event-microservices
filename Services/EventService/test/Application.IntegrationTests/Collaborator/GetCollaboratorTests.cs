@@ -1,6 +1,6 @@
 ﻿using Application.IntegrationTests;
-using Application.UseCases.Collaborator.Inputs;
-using Application.UseCases.Event.Inputs;
+using Domain.Contracts.Collaborator.Inputs;
+using Domain.Contracts.Event;
 using FluentAssertions;
 
 namespace Tests.Collaborator;

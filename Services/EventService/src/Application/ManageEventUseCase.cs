@@ -1,4 +1,4 @@
-﻿using Application.Ports.In;
+﻿using Domain.Ports.In;
 using Application.UseCases.Collaborator;
 using Application.UseCases.Event;
 using Microsoft.Extensions.DependencyInjection;

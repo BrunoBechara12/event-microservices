@@ -1,4 +1,4 @@
-﻿namespace Application.UseCases.Event.Outputs;
+namespace Domain.Contracts.Event.Outputs;
 public record DetailedEventOutput
 (
     int Id,
@@ -10,5 +10,3 @@ public record DetailedEventOutput
     DateTime CreatedAt,
     DateTime? UpdatedAt
 );
-
-    

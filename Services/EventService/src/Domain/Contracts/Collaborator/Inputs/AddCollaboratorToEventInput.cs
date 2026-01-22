@@ -1,6 +1,6 @@
-﻿using static Domain.Entities.EventCollaborator;
+using static Domain.Entities.EventCollaborator;
 
-namespace Application.UseCases.Collaborator.Inputs;
+namespace Domain.Contracts.Collaborator.Inputs;
 public record AddCollaboratorToEventInput
 (
     int CollaboratorId,
