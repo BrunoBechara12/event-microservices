@@ -1,5 +1,5 @@
-﻿using Adapters.Secondary.Data.Context;
-using Application.Ports.In;
+﻿using Adapters.Secondary.Context;
+using Domain.Ports.In;
 using Domain.Ports.Output;
 using Microsoft.Extensions.DependencyInjection;
 

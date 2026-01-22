@@ -1,7 +1,7 @@
 using Adapters.Primary.API.Extensions;
 using Adapters.Primary.API.Middlewares;
-using Adapters.Secondary.Data;
-using Adapters.Secondary.Data.Context;
+using Adapters.Secondary;
+using Adapters.Secondary.Context;
 using Application;
 using Microsoft.EntityFrameworkCore;
 

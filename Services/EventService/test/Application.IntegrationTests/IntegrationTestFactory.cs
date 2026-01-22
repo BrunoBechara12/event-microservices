@@ -1,4 +1,4 @@
-﻿using Adapters.Secondary.Data.Context;
+﻿using Adapters.Secondary.Context;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;

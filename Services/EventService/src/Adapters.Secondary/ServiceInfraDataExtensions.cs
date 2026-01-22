@@ -1,11 +1,11 @@
 ﻿using Domain.Ports.Output;
-using Adapters.Secondary.Data.Context;
-using Adapters.Secondary.Data.Repositories;
+using Adapters.Secondary.Context;
+using Adapters.Secondary.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Adapters.Secondary.Data;
+namespace Adapters.Secondary;
 public static class ServiceInfraDataExtensions
 {
     public static IServiceCollection AddDataBaseService(this IServiceCollection services, IConfiguration configuration)

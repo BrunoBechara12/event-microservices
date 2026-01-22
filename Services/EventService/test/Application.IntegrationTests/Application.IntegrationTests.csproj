@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Adapters.Primary.API\Adapters.Primary.API.csproj" />
-    <ProjectReference Include="..\..\src\Adapters.Secondary.Data\Adapters.Secondary.Data.csproj" />
+    <ProjectReference Include="..\..\src\Adapters.Secondary\Adapters.Secondary.csproj" />
     <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
   </ItemGroup>
 

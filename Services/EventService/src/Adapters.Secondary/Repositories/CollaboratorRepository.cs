@@ -1,9 +1,9 @@
 ﻿using Domain.Entities;
 using Domain.Ports.Output;
-using Adapters.Secondary.Data.Context;
+using Adapters.Secondary.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Adapters.Secondary.Data.Repositories;
+namespace Adapters.Secondary.Repositories;
 
 public class CollaboratorRepository : ICollaboratorRepository
 {
