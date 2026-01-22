@@ -1,6 +1,7 @@
-﻿using GuestEntity = Domain.Entities.Guest;
+using Domain.Contracts.Guest.Outputs;
+using GuestEntity = Domain.Entities.Guest;
 
-namespace Application.UseCases.Outputs;
+namespace Domain.Contracts.Guest;
 public static class GuestExtensions
 {
     public static DefaultGuestOutput? ToDefaultGuestOutput(this GuestEntity entity)

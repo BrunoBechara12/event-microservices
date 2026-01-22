@@ -1,8 +1,8 @@
-﻿using Application.UseCases.Inputs;
-using Application.UseCases.Outputs;
+using Domain.Contracts.Guest.Inputs;
+using Domain.Contracts.Guest.Outputs;
 using Result;
 
-namespace Application.Ports.Input;
+namespace Domain.Ports.In;
 public interface IGuestUseCase
 {
     Task<Result<IEnumerable<DetailedGuestOutput>>> Get();

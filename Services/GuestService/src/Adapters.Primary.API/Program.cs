@@ -1,7 +1,7 @@
 using Adapters.Primary.API.Extensions;
 using Adapters.Secondary;
 using Adapters.Secondary.Context;
-using Application.UseCases;
+using Application;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

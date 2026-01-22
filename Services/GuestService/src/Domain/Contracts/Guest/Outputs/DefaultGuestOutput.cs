@@ -1,4 +1,4 @@
-﻿namespace Application.UseCases.Outputs;
+namespace Domain.Contracts.Guest.Outputs;
 public record DefaultGuestOutput
 (
     int Id,

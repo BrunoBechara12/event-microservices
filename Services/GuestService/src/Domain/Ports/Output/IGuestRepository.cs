@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Domain.Ports;
+namespace Domain.Ports.Output;
 public interface IGuestRepository
 {
     Task<List<Guest>?> Get();

@@ -1,9 +1,10 @@
-﻿using Application.Ports.Input;
-using Application.UseCases.Inputs;
-using Application.UseCases.Outputs;
-using Domain.Ports;
+﻿using Domain.Ports.In;
+using Domain.Contracts.Guest;
 using Result;
 using static Domain.Entities.Guest;
+using Domain.Ports.Output;
+using Domain.Contracts.Guest.Inputs;
+using Domain.Contracts.Guest.Outputs;
 
 namespace Application.UseCases;
 public class GuestUseCase : IGuestUseCase
