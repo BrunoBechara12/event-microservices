@@ -1,19 +1,22 @@
 ﻿using Domain.Contracts.Event;
-using Domain.Ports.Output;
-using Result;
-using Domain.Ports.In;
-using static Domain.Entities.Event;
 using Domain.Contracts.Event.Inputs;
 using Domain.Contracts.Event.Outputs;
+using Domain.Events;
+using Domain.Ports.In;
+using Domain.Ports.Output;
+using Result;
+using static Domain.Entities.Event;
 
 namespace Application.UseCases.Event;
 public class EventUseCase : IEventUseCase
 {
     private readonly IEventRepository _eventRepository;
+    public readonly IMessagePublisher _messagePublisher;
 
-    public EventUseCase(IEventRepository eventRepository)
+    public EventUseCase(IEventRepository eventRepository, IMessagePublisher messagePublisher)
     {
         _eventRepository = eventRepository;
+        _messagePublisher = messagePublisher;
     }
 
     public async Task<Result<IEnumerable<DetailedEventOutput>>> Get()
@@ -69,6 +72,8 @@ public class EventUseCase : IEventUseCase
         var createdEvent = await _eventRepository.Create(newEvent);
 
         var eventOutput = createdEvent.ToDefaultEventOutput();
+
+        await _messagePublisher.PublishAsync<EventCreated>(new EventCreated(eventOutput!.Id, eventOutput.Name), CancellationToken.None);
 
         return Result<DefaultEventOutput>.Success(eventOutput, "Event created with success!");
     }
