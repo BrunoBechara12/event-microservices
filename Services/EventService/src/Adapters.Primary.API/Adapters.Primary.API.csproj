@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\GuestService\src\Adapters.Secondary\Adapters.Secondary.csproj" />
     <ProjectReference Include="..\Adapters.Secondary\Adapters.Secondary.csproj" />
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
