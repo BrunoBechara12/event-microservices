@@ -7,6 +7,7 @@ public class GuestDbContext : DbContext
     public GuestDbContext(DbContextOptions<GuestDbContext> options) : base(options)
     { }
     public DbSet<Guest> Guests { get; set; }
+    public DbSet<Event> Events { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,6 +22,12 @@ public class GuestDbContext : DbContext
                 .HasColumnType("timestamp without time zone");
 
             entity.Property(e => e.ResponseDate)
+                .HasColumnType("timestamp without time zone");
+        });
+
+        modelBuilder.Entity<Event>(entity =>
+        {
+            entity.Property(e => e.CreatedAt)
                 .HasColumnType("timestamp without time zone");
         });
     }
