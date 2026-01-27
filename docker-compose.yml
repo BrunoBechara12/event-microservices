@@ -24,6 +24,7 @@ services:
       - "5001:5001"
     depends_on:
       - events.database
+      - rabbitmq
 
   guests.database:
     image: postgres:15-alpine
@@ -48,5 +49,12 @@ services:
       - "5003:5001"
     depends_on:
       - guests.database
-        
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: event-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
 
