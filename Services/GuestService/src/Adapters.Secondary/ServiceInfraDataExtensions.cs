@@ -1,6 +1,8 @@
 ﻿using Adapters.Secondary.Context;
+using Adapters.Secondary.Messaging;
 using Adapters.Secondary.Repositories;
 using Domain.Ports.Output;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,28 @@ public static class ServiceInfraDataExtensions
         services.AddDbContext<GuestDbContext>(options =>
             options.UseNpgsql(connectionString));
         services.AddScoped<IGuestRepository, GuestRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
         return services;
+    }
+
+    public static void AddRabbitMQService(this IServiceCollection services, IConfiguration configuration)
+    {
+        var rabbitMQSection = configuration.GetSection("RabbitMQ");
+
+        services.AddMassTransit(busConfigurator =>
+        {
+            busConfigurator.AddConsumer<EventCreatedConsumer>();
+
+            busConfigurator.UsingRabbitMq((ctx, cfg) =>
+            {
+                cfg.Host(new Uri(rabbitMQSection["Host"]!), host =>
+                {
+                    host.Username(rabbitMQSection["Username"]!);
+                    host.Password(rabbitMQSection["Password"]!);
+                });
+
+                cfg.ConfigureEndpoints(ctx);
+            });
+        });
     }
 }
