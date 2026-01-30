@@ -1,6 +1,6 @@
 ﻿using Application.IntegrationTests;
 using Domain.Contracts.Collaborator.Inputs;
-using Domain.Contracts.Event;
+using Domain.Contracts.Event.Inputs;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using static Domain.Entities.EventCollaborator;
