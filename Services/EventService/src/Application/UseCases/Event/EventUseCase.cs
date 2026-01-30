@@ -113,7 +113,7 @@ public class EventUseCase : IEventUseCase
 
         await _eventRepository.Delete(eventItem);
 
-        await _messagePublisher.PublishAsync<EventDeleted>(new EventDeleted(eventItem.Id), CancellationToken.None);
+        await _messagePublisher.PublishAsync<EventDeleted>(new EventDeleted(id), CancellationToken.None);
 
         return Result<DefaultEventOutput>.Success(null, "Event deleted with success!");
     }
