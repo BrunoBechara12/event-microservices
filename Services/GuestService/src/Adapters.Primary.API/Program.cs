@@ -1,4 +1,5 @@
 using Adapters.Primary.API.Extensions;
+using Adapters.Primary.API.Middlewares;
 using Adapters.Secondary;
 using Adapters.Secondary.Context;
 using Application;
@@ -33,6 +34,8 @@ app.UseSwaggerUI(options =>
 
     options.ConfigObject.AdditionalItems["operationsSorter"] = "method";
 });
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
