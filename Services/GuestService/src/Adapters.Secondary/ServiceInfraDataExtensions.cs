@@ -28,6 +28,7 @@ public static class ServiceInfraDataExtensions
         services.AddMassTransit(busConfigurator =>
         {
             busConfigurator.AddConsumer<EventCreatedConsumer>();
+            busConfigurator.AddConsumer<EventDeletedConsumer>();
 
             busConfigurator.UsingRabbitMq((ctx, cfg) =>
             {
