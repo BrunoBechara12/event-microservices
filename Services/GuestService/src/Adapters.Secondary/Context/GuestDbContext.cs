@@ -23,6 +23,11 @@ public class GuestDbContext : DbContext
 
             entity.Property(e => e.ResponseDate)
                 .HasColumnType("timestamp without time zone");
+
+            entity.HasOne(g => g.Event)
+                .WithMany()
+                .HasForeignKey(g => g.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Event>(entity =>

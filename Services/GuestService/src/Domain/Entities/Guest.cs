@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 public sealed class Guest
@@ -12,6 +13,7 @@ public sealed class Guest
 
     [Key]
     public int Id { get; private set; }
+    public int EventId { get; private set; }
     public string Name { get; private set; }
     public string Email { get; private set; }
     public string PhoneNumber { get; private set; }
@@ -19,13 +21,16 @@ public sealed class Guest
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
     public DateTime? ResponseDate { get; private set; }
+    public Event Event { get; private set; } = null!;
+
 
     private Guest() { }
 
-    private Guest(string name, string email, string phoneNumber)
+    private Guest(int eventId, string name, string email, string phoneNumber)
     {
         Validate(name, email, phoneNumber);
 
+        EventId = eventId;
         Name = name;
         Email = email;
         PhoneNumber = phoneNumber;
@@ -33,9 +38,9 @@ public sealed class Guest
         CreatedAt = DateTime.UtcNow; 
     }
 
-    public static Guest CreateGuest(string name, string email, string phoneNumber)
+    public static Guest CreateGuest(int eventId, string name, string email, string phoneNumber)
     {
-        return new Guest(name, email, phoneNumber);
+        return new Guest(eventId, name, email, phoneNumber);
     }
 
     public void UpdateGuest(string name, string email, string phoneNumber, InviteStatus status)

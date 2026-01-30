@@ -4,6 +4,7 @@ namespace Domain.Contracts.Guest.Outputs;
 public record DetailedGuestOutput
 (
     int Id,
+    int EventId,
     string Name, 
     string Email,
     string PhoneNumber,

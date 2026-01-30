@@ -10,6 +10,7 @@ public static class GuestExtensions
 
         return new DefaultGuestOutput(
             entity.Id,
+            entity.EventId,
             entity.Name
         );
     }
@@ -20,6 +21,7 @@ public static class GuestExtensions
 
         return new DetailedGuestOutput(
             entity.Id,
+            entity.EventId,
             entity.Name,
             entity.Email,
             entity.PhoneNumber,
