@@ -10,10 +10,12 @@ namespace Application.UseCases;
 public class GuestUseCase : IGuestUseCase
 {
     private readonly IGuestRepository _guestRepository;
+    private readonly IEventRepository _eventRepository;
 
-    public GuestUseCase(IGuestRepository guestRepository)
+    public GuestUseCase(IGuestRepository guestRepository, IEventRepository eventRepository)
     {
         _guestRepository = guestRepository;
+        _eventRepository = eventRepository;
     }
 
     public async Task<Result<IEnumerable<DetailedGuestOutput>>> Get()
@@ -46,7 +48,15 @@ public class GuestUseCase : IGuestUseCase
 
     public async Task<Result<DefaultGuestOutput>> Create(CreateGuestInput input)
     {
+        var eventExists = await _eventRepository.GetById(input.EventId);
+        
+        if (eventExists == null)
+        {
+            return Result<DefaultGuestOutput>.Failure("Event not found");
+        }
+
         var newGuest = CreateGuest(
+            input.EventId,
             input.Name, 
             input.Email, 
             input.PhoneNumber
