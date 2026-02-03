@@ -1,5 +1,5 @@
 using Application.IntegrationTests;
-using Domain.Contracts.Guest.Inputs;
+using Domain.DTOs.Guest.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +18,7 @@ public class CreateGuestTests : BaseIntegrationTest
         var eventEntity = Domain.Entities.Event.CreateEvent(1, "Birthday Party");
         await EventRepository.Create(eventEntity);
 
-        var input = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
 
         // Act
         var result = await GuestUseCase.Create(input);
@@ -46,7 +46,7 @@ public class CreateGuestTests : BaseIntegrationTest
     {
         //Arrange
         var nonExistentEventId = 999;
-        var input = new CreateGuestInput(nonExistentEventId, "John Doe", "john.doe@email.com", "11999999999");
+        var input = new CreateGuestRequestDto(nonExistentEventId, "John Doe", "john.doe@email.com", "11999999999");
 
         // Act
         var result = await GuestUseCase.Create(input);
@@ -67,7 +67,7 @@ public class CreateGuestTests : BaseIntegrationTest
         var eventEntity = Domain.Entities.Event.CreateEvent(2, "Conference");
         await EventRepository.Create(eventEntity);
 
-        var input = new CreateGuestInput(eventEntity.Id, "Jo", "john.doe@email.com", "11999999999");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "Jo", "john.doe@email.com", "11999999999");
 
         // Act
         var act = async () => await GuestUseCase.Create(input);
@@ -87,7 +87,7 @@ public class CreateGuestTests : BaseIntegrationTest
         var eventEntity = Domain.Entities.Event.CreateEvent(3, "Wedding");
         await EventRepository.Create(eventEntity);
 
-        var input = new CreateGuestInput(eventEntity.Id, "John Doe", "invalidemail", "11999999999");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "invalidemail", "11999999999");
 
         // Act
         var act = async () => await GuestUseCase.Create(input);
@@ -107,7 +107,7 @@ public class CreateGuestTests : BaseIntegrationTest
         var eventEntity = Domain.Entities.Event.CreateEvent(4, "Meeting");
         await EventRepository.Create(eventEntity);
 
-        var input = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "");
 
         // Act
         var act = async () => await GuestUseCase.Create(input);
@@ -127,7 +127,7 @@ public class CreateGuestTests : BaseIntegrationTest
         var eventEntity = Domain.Entities.Event.CreateEvent(5, "Party");
         await EventRepository.Create(eventEntity);
 
-        var input = new CreateGuestInput(eventEntity.Id, "Jane Doe", "jane.doe@email.com", "11888888888");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "Jane Doe", "jane.doe@email.com", "11888888888");
 
         // Act
         var result = await GuestUseCase.Create(input);
@@ -152,7 +152,7 @@ public class CreateGuestTests : BaseIntegrationTest
         // Simulate event deletion
         await EventRepository.Delete(eventEntity);
 
-        var input = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
 
         // Act
         var result = await GuestUseCase.Create(input);

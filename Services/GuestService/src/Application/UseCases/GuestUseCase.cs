@@ -1,10 +1,10 @@
-﻿using Domain.Ports.In;
-using Domain.Contracts.Guest;
+﻿using Domain.Mappers;
 using Result;
 using static Domain.Entities.Guest;
 using Domain.Ports.Output;
-using Domain.Contracts.Guest.Inputs;
-using Domain.Contracts.Guest.Outputs;
+using Domain.DTOs.Guest.Requests;
+using Domain.DTOs.Guest.Responses;
+using Domain.Ports.Input;
 
 namespace Application.UseCases;
 public class GuestUseCase : IGuestUseCase
@@ -18,41 +18,41 @@ public class GuestUseCase : IGuestUseCase
         _eventRepository = eventRepository;
     }
 
-    public async Task<Result<IEnumerable<DetailedGuestOutput>>> Get()
+    public async Task<Result<IEnumerable<DetailedGuestResponseDto>>> Get()
     {
         var guests = await _guestRepository.Get();
 
         if (guests == null || !guests.Any())
         {
-            return Result<IEnumerable<DetailedGuestOutput>>.Success(null, "No guests found.");
+            return Result<IEnumerable<DetailedGuestResponseDto>>.Success(null, "No guests found.");
         }
 
-        var guestOutput = guests.Select(g => g.ToDetailedGuestOutput());
+        var guestOutput = guests.Select(g => g.ToDetailedResponseDto());
 
-        return Result<IEnumerable<DetailedGuestOutput>>.Success(guestOutput!, "Guests found with success!");
+        return Result<IEnumerable<DetailedGuestResponseDto>>.Success(guestOutput!, "Guests found with success!");
     }
 
-    public async Task<Result<DetailedGuestOutput>> GetById(int id)
+    public async Task<Result<DetailedGuestResponseDto>> GetById(int id)
     {
         var guest = await _guestRepository.GetById(id);
 
         if (guest == null)
         {
-            return Result<DetailedGuestOutput>.Failure("Guest not found.");
+            return Result<DetailedGuestResponseDto>.Failure("Guest not found.");
         }
 
-        var guestOutput = guest.ToDetailedGuestOutput();
+        var guestOutput = guest.ToDetailedResponseDto();
 
-        return Result<DetailedGuestOutput>.Success(guestOutput!, "Guest found with success!");
+        return Result<DetailedGuestResponseDto>.Success(guestOutput!, "Guest found with success!");
     }
 
-    public async Task<Result<DefaultGuestOutput>> Create(CreateGuestInput input)
+    public async Task<Result<DefaultGuestResponseDto>> Create(CreateGuestRequestDto input)
     {
         var eventExists = await _eventRepository.GetById(input.EventId);
         
         if (eventExists == null)
         {
-            return Result<DefaultGuestOutput>.Failure("Event not found");
+            return Result<DefaultGuestResponseDto>.Failure("Event not found");
         }
 
         var newGuest = CreateGuest(
@@ -64,18 +64,18 @@ public class GuestUseCase : IGuestUseCase
 
         var createdGuest = await _guestRepository.Create(newGuest);
 
-        var guestOutput = createdGuest.ToDefaultGuestOutput();
+        var guestOutput = createdGuest.ToDefaultResponseDto();
 
-        return Result<DefaultGuestOutput>.Success(guestOutput!, "Guest created with success!");
+        return Result<DefaultGuestResponseDto>.Success(guestOutput!, "Guest created with success!");
     }
 
-    public async Task<Result<DefaultGuestOutput>> Update(UpdateGuestInput input)
+    public async Task<Result<DefaultGuestResponseDto>> Update(UpdateGuestRequestDto input)
     {
         var guestItem = await _guestRepository.GetById(input.Id);
 
         if (guestItem == null)
         {
-            return Result<DefaultGuestOutput>.Failure("Guest not found.");
+            return Result<DefaultGuestResponseDto>.Failure("Guest not found.");
         }
 
         guestItem.UpdateGuest(
@@ -87,58 +87,58 @@ public class GuestUseCase : IGuestUseCase
 
         await _guestRepository.Update(guestItem);
 
-        var guestOutput = guestItem.ToDefaultGuestOutput();
+        var guestOutput = guestItem.ToDefaultResponseDto();
 
-        return Result<DefaultGuestOutput>.Success(guestOutput!, "Guest updated with success!");
+        return Result<DefaultGuestResponseDto>.Success(guestOutput!, "Guest updated with success!");
     }
 
-    public async Task<Result<DefaultGuestOutput>> Delete(int id)
+    public async Task<Result<DefaultGuestResponseDto>> Delete(int id)
     {
         var guestItem = await _guestRepository.GetById(id);
 
         if (guestItem == null)
         {
-            return Result<DefaultGuestOutput>.Failure("Guest not found.");
+            return Result<DefaultGuestResponseDto>.Failure("Guest not found.");
         }
 
         await _guestRepository.Delete(guestItem);
 
-        return Result<DefaultGuestOutput>.Success(null, "Guest deleted with success!");
+        return Result<DefaultGuestResponseDto>.Success(null, "Guest deleted with success!");
     }
 
-    public async Task<Result<DefaultGuestOutput>> AcceptInvite(InviteResponseInput input)
+    public async Task<Result<DefaultGuestResponseDto>> AcceptInvite(InviteResponseRequestDto input)
     {
         var guestItem = await _guestRepository.GetById(input.Id);
 
         if (guestItem == null)
         {
-            return Result<DefaultGuestOutput>.Failure("Guest not found.");
+            return Result<DefaultGuestResponseDto>.Failure("Guest not found.");
         }
 
         guestItem.AcceptInvite();
 
         await _guestRepository.Update(guestItem);
 
-        var guestOutput = guestItem.ToDefaultGuestOutput();
+        var guestOutput = guestItem.ToDefaultResponseDto();
 
-        return Result<DefaultGuestOutput>.Success(guestOutput!, "Invite accepted with success!");
+        return Result<DefaultGuestResponseDto>.Success(guestOutput!, "Invite accepted with success!");
     }
 
-    public async Task<Result<DefaultGuestOutput>> DeclineInvite(InviteResponseInput input)
+    public async Task<Result<DefaultGuestResponseDto>> DeclineInvite(InviteResponseRequestDto input)
     {
         var guestItem = await _guestRepository.GetById(input.Id);
 
         if (guestItem == null)
         {
-            return Result<DefaultGuestOutput>.Failure("Guest not found.");
+            return Result<DefaultGuestResponseDto>.Failure("Guest not found.");
         }
 
         guestItem.DeclineInvite();
 
         await _guestRepository.Update(guestItem);
 
-        var guestOutput = guestItem.ToDefaultGuestOutput();
+        var guestOutput = guestItem.ToDefaultResponseDto();
 
-        return Result<DefaultGuestOutput>.Success(guestOutput!, "Invite declined with success!");
+        return Result<DefaultGuestResponseDto>.Success(guestOutput!, "Invite declined with success!");
     }
 }

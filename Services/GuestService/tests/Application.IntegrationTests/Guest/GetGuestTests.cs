@@ -1,5 +1,5 @@
 using Application.IntegrationTests;
-using Domain.Contracts.Guest.Inputs;
+using Domain.DTOs.Guest.Requests;
 using FluentAssertions;
 
 namespace Tests.Guest;
@@ -22,8 +22,8 @@ public class GetGuestTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(1, "Party");
         
-        var input1 = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
-        var input2 = new CreateGuestInput(eventEntity.Id, "Jane Doe", "jane.doe@email.com", "11888888888");
+        var input1 = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var input2 = new CreateGuestRequestDto(eventEntity.Id, "Jane Doe", "jane.doe@email.com", "11888888888");
 
         // Act
         await GuestUseCase.Create(input1);
@@ -55,7 +55,7 @@ public class GetGuestTests : BaseIntegrationTest
         // Arrange
         var eventEntity = await CreateEventAsync(2, "Conference");
         
-        var input = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
         var createResult = await GuestUseCase.Create(input);
         var createdId = createResult.Data!.Id;
 
@@ -95,7 +95,7 @@ public class GetGuestTests : BaseIntegrationTest
         // Arrange
         var eventEntity = await CreateEventAsync(3, "Wedding");
         
-        var input = new CreateGuestInput(eventEntity.Id, "Maria Silva", "maria.silva@email.com", "11777777777");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "Maria Silva", "maria.silva@email.com", "11777777777");
         await GuestUseCase.Create(input);
 
         // Act

@@ -1,5 +1,5 @@
 using Application.IntegrationTests;
-using Domain.Contracts.Guest.Inputs;
+using Domain.DTOs.Guest.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +23,7 @@ public class DeleteGuestTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(1, "Party");
         
-        var input = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var input = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
         var createResult = await GuestUseCase.Create(input);
 
         // Act
@@ -65,8 +65,8 @@ public class DeleteGuestTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(2, "Conference");
         
-        var input1 = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
-        var input2 = new CreateGuestInput(eventEntity.Id, "Jane Doe", "jane.doe@email.com", "11888888888");
+        var input1 = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var input2 = new CreateGuestRequestDto(eventEntity.Id, "Jane Doe", "jane.doe@email.com", "11888888888");
         
         var createResult1 = await GuestUseCase.Create(input1);
         var createResult2 = await GuestUseCase.Create(input2);

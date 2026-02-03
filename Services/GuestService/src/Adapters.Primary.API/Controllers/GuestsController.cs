@@ -1,6 +1,6 @@
-﻿using Domain.Ports.In;
-using Microsoft.AspNetCore.Mvc;
-using Domain.Contracts.Guest.Inputs;
+﻿using Microsoft.AspNetCore.Mvc;
+using Domain.DTOs.Guest.Requests;
+using Domain.Ports.Input;
 
 namespace Adapters.Primary.API.Controllers;
 
@@ -50,7 +50,7 @@ public class GuestsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateGuestInput input)
+    public async Task<IActionResult> Create(CreateGuestRequestDto input)
     {
         var guest = await _guestUseCase.Create(input);
 
@@ -67,7 +67,7 @@ public class GuestsController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateGuestInput input)
+    public async Task<IActionResult> Update(UpdateGuestRequestDto input)
     {
         var guest = await _guestUseCase.Update(input);
 
@@ -103,7 +103,7 @@ public class GuestsController : ControllerBase
     [HttpPost("{id}/accept")]
     public async Task<IActionResult> AcceptInvite(int id)
     {
-        var input = new InviteResponseInput(id);
+        var input = new InviteResponseRequestDto(id);
         var guest = await _guestUseCase.AcceptInvite(input);
 
         if (guest.RequestSuccess)
@@ -121,7 +121,7 @@ public class GuestsController : ControllerBase
     [HttpPost("{id}/decline")]
     public async Task<IActionResult> DeclineInvite(int id)
     {
-        var input = new InviteResponseInput(id);
+        var input = new InviteResponseRequestDto(id);
         var guest = await _guestUseCase.DeclineInvite(input);
 
         if (guest.RequestSuccess)

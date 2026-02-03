@@ -1,5 +1,5 @@
 using Application.IntegrationTests;
-using Domain.Contracts.Guest.Inputs;
+using Domain.DTOs.Guest.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,10 +23,10 @@ public class UpdateGuestTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(1, "Party");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
         var createResult = await GuestUseCase.Create(createInput);
 
-        var updateInput = new UpdateGuestInput(createResult.Data!.Id, "John Updated", "john.updated@email.com", "11888888888");
+        var updateInput = new UpdateGuestRequestDto(createResult.Data!.Id, "John Updated", "john.updated@email.com", "11888888888");
 
         // Act
         var result = await GuestUseCase.Update(updateInput);
@@ -42,7 +42,7 @@ public class UpdateGuestTests : BaseIntegrationTest
     public async Task Update_ShouldReturnFailure_WhenGuestDoesNotExist()
     {
         // Arrange
-        var updateInput = new UpdateGuestInput(9999, "John Updated", "john.updated@email.com", "11888888888");
+        var updateInput = new UpdateGuestRequestDto(9999, "John Updated", "john.updated@email.com", "11888888888");
 
         // Act
         var result = await GuestUseCase.Update(updateInput);
@@ -61,10 +61,10 @@ public class UpdateGuestTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(2, "Conference");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
         var createResult = await GuestUseCase.Create(createInput);
 
-        var updateInput = new UpdateGuestInput(createResult.Data!.Id, "Jo", "john.updated@email.com", "11888888888");
+        var updateInput = new UpdateGuestRequestDto(createResult.Data!.Id, "Jo", "john.updated@email.com", "11888888888");
 
         // Act
         var act = async () => await GuestUseCase.Update(updateInput);
@@ -85,10 +85,10 @@ public class UpdateGuestTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(3, "Wedding");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
         var createResult = await GuestUseCase.Create(createInput);
 
-        var updateInput = new UpdateGuestInput(createResult.Data!.Id, "John Updated", "invalidemail", "11888888888");
+        var updateInput = new UpdateGuestRequestDto(createResult.Data!.Id, "John Updated", "invalidemail", "11888888888");
 
         // Act
         var act = async () => await GuestUseCase.Update(updateInput);
@@ -109,10 +109,10 @@ public class UpdateGuestTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(4, "Meeting");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
         var createResult = await GuestUseCase.Create(createInput);
 
-        var updateInput = new UpdateGuestInput(createResult.Data!.Id, "John Updated", "john.updated@email.com", "");
+        var updateInput = new UpdateGuestRequestDto(createResult.Data!.Id, "John Updated", "john.updated@email.com", "");
 
         // Act
         var act = async () => await GuestUseCase.Update(updateInput);
@@ -133,13 +133,13 @@ public class UpdateGuestTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(5, "Seminar");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
         var createResult = await GuestUseCase.Create(createInput);
 
         var guestBeforeUpdate = await DbContext.Guests.FirstOrDefaultAsync(g => g.Id == createResult.Data!.Id);
         var statusBeforeUpdate = guestBeforeUpdate!.Status;
 
-        var updateInput = new UpdateGuestInput(createResult.Data!.Id, "John Updated", "john.updated@email.com", "11888888888");
+        var updateInput = new UpdateGuestRequestDto(createResult.Data!.Id, "John Updated", "john.updated@email.com", "11888888888");
 
         // Act
         await GuestUseCase.Update(updateInput);

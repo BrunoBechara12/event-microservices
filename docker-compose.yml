@@ -50,6 +50,67 @@ services:
     depends_on:
       - guests.database
 
+  notifications.database:
+    image: postgres:15-alpine
+    container_name: notifications.database
+    environment:
+      - POSTGRES_DB=notifications
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+       - ./.containers/notifications-db:/var/lib/postgresql/data
+    ports:
+       - "5434:5432"
+
+  notifications.api:
+    image: ${DOCKER_REGISTRY-}notificationsapi
+    container_name: notifications.api
+    build:
+      context: ./
+      dockerfile: Services/NotificationService/src/Adapters.Primary.API/Dockerfile
+    ports:
+      - "5004:5000"
+      - "5005:5001"
+    environment:
+      - ConnectionStrings__NotificationDb=Host=notifications.database;Port=5432;Database=notifications;Username=postgres;Password=postgres
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Port=5672
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+      - EvolutionApi__BaseUrl=http://evolution-api:8080
+      - EvolutionApi__ApiKey=${EVOLUTION_API_KEY:-your-api-key}
+      - EvolutionApi__InstanceName=${EVOLUTION_INSTANCE:-default}
+    depends_on:
+      - notifications.database
+      - rabbitmq
+
+  evolution-api:
+    image: atendai/evolution-api:latest
+    container_name: evolution-api
+    environment:
+      - SERVER_URL=http://evolution-api:8080
+      - AUTHENTICATION_API_KEY=${EVOLUTION_API_KEY:-your-api-key}
+      - DATABASE_ENABLED=true
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://postgres:postgres@evolution.database:5432/evolution
+      - REDIS_ENABLED=false
+    ports:
+      - "8080:8080"
+    depends_on:
+      - evolution.database
+
+  evolution.database:
+    image: postgres:15-alpine
+    container_name: evolution.database
+    environment:
+      - POSTGRES_DB=evolution
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+       - ./.containers/evolution-db:/var/lib/postgresql/data
+    ports:
+       - "5435:5432"
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: event-rabbit

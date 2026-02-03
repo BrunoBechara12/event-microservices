@@ -1,25 +1,25 @@
-using Domain.Contracts.Guest.Outputs;
+using Domain.DTOs.Guest.Responses;
 using GuestEntity = Domain.Entities.Guest;
 
-namespace Domain.Contracts.Guest;
-public static class GuestExtensions
+namespace Domain.Mappers;
+public static class GuestMapper
 {
-    public static DefaultGuestOutput? ToDefaultGuestOutput(this GuestEntity entity)
+    public static DefaultGuestResponseDto? ToDefaultResponseDto(this GuestEntity entity)
     {
         if (entity is null) return null;
 
-        return new DefaultGuestOutput(
+        return new DefaultGuestResponseDto(
             entity.Id,
             entity.EventId,
             entity.Name
         );
     }
 
-    public static DetailedGuestOutput? ToDetailedGuestOutput(this GuestEntity entity)
+    public static DetailedGuestResponseDto? ToDetailedResponseDto(this GuestEntity entity)
     {
         if (entity is null) return null;
 
-        return new DetailedGuestOutput(
+        return new DetailedGuestResponseDto(
             entity.Id,
             entity.EventId,
             entity.Name,

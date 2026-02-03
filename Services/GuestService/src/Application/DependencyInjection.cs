@@ -1,9 +1,9 @@
-﻿using Application.UseCases;
-using Domain.Ports.In;
+using Application.UseCases;
+using Domain.Ports.Input;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
-public static class ManageGuestUseCase
+public static class DependencyInjection
 {
     public static IServiceCollection AddGuestUseCase(this IServiceCollection services)
     {

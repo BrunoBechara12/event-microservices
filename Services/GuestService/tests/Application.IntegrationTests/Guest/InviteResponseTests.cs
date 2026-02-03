@@ -1,5 +1,5 @@
 using Application.IntegrationTests;
-using Domain.Contracts.Guest.Inputs;
+using Domain.DTOs.Guest.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,10 +23,10 @@ public class InviteResponseTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(1, "Party");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "John Doe", "john.doe@email.com", "11999999999");
         var createResult = await GuestUseCase.Create(createInput);
         
-        var inviteInput = new InviteResponseInput(createResult.Data!.Id);
+        var inviteInput = new InviteResponseRequestDto(createResult.Data!.Id);
 
         // Act
         var result = await GuestUseCase.AcceptInvite(inviteInput);
@@ -44,7 +44,7 @@ public class InviteResponseTests : BaseIntegrationTest
     public async Task AcceptInvite_ShouldReturnFailure_WhenGuestDoesNotExist()
     {
         //Arrange
-        var inviteInput = new InviteResponseInput(9999);
+        var inviteInput = new InviteResponseRequestDto(9999);
 
         // Act
         var result = await GuestUseCase.AcceptInvite(inviteInput);
@@ -60,10 +60,10 @@ public class InviteResponseTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(2, "Conference");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "Jane Doe", "jane.doe@email.com", "11888888888");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "Jane Doe", "jane.doe@email.com", "11888888888");
         var createResult = await GuestUseCase.Create(createInput);
         
-        var inviteInput = new InviteResponseInput(createResult.Data!.Id);
+        var inviteInput = new InviteResponseRequestDto(createResult.Data!.Id);
 
         // Act
         var result = await GuestUseCase.DeclineInvite(inviteInput);
@@ -81,7 +81,7 @@ public class InviteResponseTests : BaseIntegrationTest
     public async Task DeclineInvite_ShouldReturnFailure_WhenGuestDoesNotExist()
     {
         //Arrange
-        var inviteInput = new InviteResponseInput(9999);
+        var inviteInput = new InviteResponseRequestDto(9999);
 
         // Act
         var result = await GuestUseCase.DeclineInvite(inviteInput);
@@ -97,13 +97,13 @@ public class InviteResponseTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(3, "Wedding");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "Maria Silva", "maria.silva@email.com", "11777777777");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "Maria Silva", "maria.silva@email.com", "11777777777");
         var createResult = await GuestUseCase.Create(createInput);
         
         var guestBeforeAccept = await DbContext.Guests.FirstOrDefaultAsync(g => g.Id == createResult.Data!.Id);
         var updatedAtBefore = guestBeforeAccept!.UpdatedAt;
         
-        var inviteInput = new InviteResponseInput(createResult.Data!.Id);
+        var inviteInput = new InviteResponseRequestDto(createResult.Data!.Id);
 
         // Act
         await GuestUseCase.AcceptInvite(inviteInput);
@@ -120,13 +120,13 @@ public class InviteResponseTests : BaseIntegrationTest
         //Arrange
         var eventEntity = await CreateEventAsync(4, "Meeting");
         
-        var createInput = new CreateGuestInput(eventEntity.Id, "Carlos Souza", "carlos.souza@email.com", "11666666666");
+        var createInput = new CreateGuestRequestDto(eventEntity.Id, "Carlos Souza", "carlos.souza@email.com", "11666666666");
         var createResult = await GuestUseCase.Create(createInput);
         
         var guestBeforeDecline = await DbContext.Guests.FirstOrDefaultAsync(g => g.Id == createResult.Data!.Id);
         var updatedAtBefore = guestBeforeDecline!.UpdatedAt;
         
-        var inviteInput = new InviteResponseInput(createResult.Data!.Id);
+        var inviteInput = new InviteResponseRequestDto(createResult.Data!.Id);
 
         // Act
         await GuestUseCase.DeclineInvite(inviteInput);

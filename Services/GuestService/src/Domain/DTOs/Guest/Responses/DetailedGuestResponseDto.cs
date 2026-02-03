@@ -1,11 +1,11 @@
 using static Domain.Entities.Guest;
 
-namespace Domain.Contracts.Guest.Outputs;
-public record DetailedGuestOutput
+namespace Domain.DTOs.Guest.Responses;
+public record DetailedGuestResponseDto
 (
     int Id,
     int EventId,
-    string Name, 
+    string Name,
     string Email,
     string PhoneNumber,
     InviteStatus Status,

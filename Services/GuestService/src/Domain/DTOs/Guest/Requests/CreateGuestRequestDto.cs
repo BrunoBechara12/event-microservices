@@ -1,5 +1,5 @@
-namespace Domain.Contracts.Guest.Inputs;
-public record CreateGuestInput(
+namespace Domain.DTOs.Guest.Requests;
+public record CreateGuestRequestDto(
     int EventId,
     string Name,
     string Email,
