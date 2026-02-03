@@ -1,5 +1,5 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Event.Inputs;
+using Domain.DTOs.Event.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ public class DeleteEventTests : BaseIntegrationTest
     public async Task Delete_ShouldDeleteEventFromDatabase()
     {
         //Arrange
-        var input = new CreateEventInput("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
+        var input = new CreateEventRequestDto("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
         var createResult = await EventUseCase.Create(input);
 
         // Act

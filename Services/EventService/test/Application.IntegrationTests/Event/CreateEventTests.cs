@@ -1,5 +1,5 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Event.Inputs;
+using Domain.DTOs.Event.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ public class CreateEventTests : BaseIntegrationTest
     public async Task Create_ShouldAddNewEventToDatabase_WhenDataIsValid()
     {
         //Arrange
-        var input = new CreateEventInput("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
+        var input = new CreateEventRequestDto("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
 
         // Act
         var result = await EventUseCase.Create(input);
@@ -38,7 +38,7 @@ public class CreateEventTests : BaseIntegrationTest
     public async Task Create_ShouldThrowArgumentException_WhenNameIsTooShort()
     {
         //Arrange
-        var input = new CreateEventInput("Ev", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
+        var input = new CreateEventRequestDto("Ev", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
 
         // Act
         var act = async () => await EventUseCase.Create(input);
@@ -55,7 +55,7 @@ public class CreateEventTests : BaseIntegrationTest
     public async Task Create_ShouldThrowArgumentException_WhenDateIsInPast()
     {
         //Arrange
-        var input = new CreateEventInput("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(-2), 2);
+        var input = new CreateEventRequestDto("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(-2), 2);
 
         // Act
         var act = async () => await EventUseCase.Create(input);
@@ -72,7 +72,7 @@ public class CreateEventTests : BaseIntegrationTest
     public async Task Create_ShouldThrowArgumentException_WhenOwnerIdIsInvalid()
     {
         //Arrange
-        var input = new CreateEventInput("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 0);
+        var input = new CreateEventRequestDto("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 0);
 
         // Act
         var act = async () => await EventUseCase.Create(input);

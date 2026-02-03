@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Ports.In;
-using Domain.Contracts.Event.Inputs;
+using Domain.Ports.Input;
+using Domain.DTOs.Event.Requests;
 
 namespace Adapters.Primary.API.Controllers;
 
@@ -67,7 +67,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateEventInput input)
+    public async Task<IActionResult> Create(CreateEventRequestDto input)
     {
         var eventItem = await _eventUseCase.Create(input);
 
@@ -84,7 +84,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateEventInput updateEvent)
+    public async Task<IActionResult> Update(UpdateEventRequestDto updateEvent)
     {
         var eventItem = await _eventUseCase.Update(updateEvent);
 

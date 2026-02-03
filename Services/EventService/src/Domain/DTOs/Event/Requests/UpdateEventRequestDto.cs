@@ -1,6 +1,7 @@
-namespace Domain.Contracts.Event.Inputs;
-public record CreateEventInput
+namespace Domain.DTOs.Event.Requests;
+public record UpdateEventRequestDto
 (
+    int Id,
     string Name,
     string Description,
     string Location,

@@ -1,5 +1,5 @@
-namespace Domain.Contracts.Collaborator.Outputs;
-public record DetailedCollaboratorOutput
+namespace Domain.DTOs.Collaborator.Responses;
+public record DetailedCollaboratorResponseDto
 (
     int Id,
     string Name,

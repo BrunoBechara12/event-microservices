@@ -1,5 +1,5 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Event.Inputs;
+using Domain.DTOs.Event.Requests;
 using FluentAssertions;
 
 namespace Tests.Event;
@@ -14,8 +14,8 @@ public class GetEventTests : BaseIntegrationTest
     public async Task Get_ShouldReturnEventList_WhenEventsExist()
     {
         //Arrange
-        var input1 = new CreateEventInput("Event1", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
-        var input2 = new CreateEventInput("Event2", "Event 2 description", "Street 3", DateTime.UtcNow.AddDays(2), 2);
+        var input1 = new CreateEventRequestDto("Event1", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
+        var input2 = new CreateEventRequestDto("Event2", "Event 2 description", "Street 3", DateTime.UtcNow.AddDays(2), 2);
 
         // Act
         await EventUseCase.Create(input1);
@@ -46,7 +46,7 @@ public class GetEventTests : BaseIntegrationTest
     public async Task GetById_ShouldReturnEvent_WhenEventExists()
     {
         // Arrange
-        var input = new CreateEventInput("Event 1", "Description", "Street 1", DateTime.UtcNow.AddDays(5), 10);
+        var input = new CreateEventRequestDto("Event 1", "Description", "Street 1", DateTime.UtcNow.AddDays(5), 10);
         var createResult = await EventUseCase.Create(input);
         var createdId = createResult.Data!.Id;
 
@@ -83,10 +83,10 @@ public class GetEventTests : BaseIntegrationTest
         // Arrange
         var userId = 50;
 
-        var input1 = new CreateEventInput("Event A", "Desc A", "Street A", DateTime.UtcNow.AddDays(1), userId);
-        var input2 = new CreateEventInput("Event B", "Desc B", "Street B", DateTime.UtcNow.AddDays(2), userId);
+        var input1 = new CreateEventRequestDto("Event A", "Desc A", "Street A", DateTime.UtcNow.AddDays(1), userId);
+        var input2 = new CreateEventRequestDto("Event B", "Desc B", "Street B", DateTime.UtcNow.AddDays(2), userId);
 
-        var inputOtherUser = new CreateEventInput("Event C", "Desc C", "Street C", DateTime.UtcNow.AddDays(3), 99);
+        var inputOtherUser = new CreateEventRequestDto("Event C", "Desc C", "Street C", DateTime.UtcNow.AddDays(3), 99);
 
         await EventUseCase.Create(input1);
         await EventUseCase.Create(input2);

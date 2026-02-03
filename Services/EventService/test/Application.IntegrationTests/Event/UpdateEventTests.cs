@@ -1,5 +1,5 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Event.Inputs;
+using Domain.DTOs.Event.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +15,10 @@ public class UpdateEventTests : BaseIntegrationTest
     public async Task Update_ShouldUpdateEvent_WhenDataIsValid()
     {
         //Arrange
-        var createInput = new CreateEventInput("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
+        var createInput = new CreateEventRequestDto("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
         var createResult = await EventUseCase.Create(createInput);
 
-        var updateInput = new UpdateEventInput(createResult.Data!.Id, "Event Edited", "Event 1 description edited", "Street 2.2", DateTime.UtcNow.AddDays(10), 2);
+        var updateInput = new UpdateEventRequestDto(createResult.Data!.Id, "Event Edited", "Event 1 description edited", "Street 2.2", DateTime.UtcNow.AddDays(10), 2);
 
         // Act
         var result = await EventUseCase.Update(updateInput);
@@ -34,7 +34,7 @@ public class UpdateEventTests : BaseIntegrationTest
     public async Task Update_ShouldReturnFailure_WhenEventDoesNotExist()
     {
         // Arrange
-        var updateInput = new UpdateEventInput(9999, "Event edited", "Description", "Location", DateTime.UtcNow.AddDays(2), 1);
+        var updateInput = new UpdateEventRequestDto(9999, "Event edited", "Description", "Location", DateTime.UtcNow.AddDays(2), 1);
 
         // Act
         var result = await EventUseCase.Update(updateInput);
@@ -51,10 +51,10 @@ public class UpdateEventTests : BaseIntegrationTest
     public async Task Update_ShouldThrowArgumentException_WhenNameIsTooShort()
     {
         //Arrange
-        var createInput = new CreateEventInput("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
+        var createInput = new CreateEventRequestDto("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
         var createResult = await EventUseCase.Create(createInput);
 
-        var updateInput = new UpdateEventInput(createResult.Data!.Id, "Ed", "Event 1 description edited", "Street 2.2", DateTime.UtcNow.AddDays(10), 2);
+        var updateInput = new UpdateEventRequestDto(createResult.Data!.Id, "Ed", "Event 1 description edited", "Street 2.2", DateTime.UtcNow.AddDays(10), 2);
 
         // Act
         var act = async () => await EventUseCase.Update(updateInput);
@@ -73,10 +73,10 @@ public class UpdateEventTests : BaseIntegrationTest
     public async Task Update_ShouldThrowArgumentException_WhenDateIsInPast()
     {
         //Arrange
-        var createInput = new CreateEventInput("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
+        var createInput = new CreateEventRequestDto("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
         var createResult = await EventUseCase.Create(createInput);
 
-        var updateInput = new UpdateEventInput(createResult.Data!.Id, "Event Edited", "Event 1 description edited", "Street 2.2", DateTime.UtcNow.AddDays(-2), 2);
+        var updateInput = new UpdateEventRequestDto(createResult.Data!.Id, "Event Edited", "Event 1 description edited", "Street 2.2", DateTime.UtcNow.AddDays(-2), 2);
 
         // Act
         var act = async () => await EventUseCase.Update(updateInput);
@@ -95,10 +95,10 @@ public class UpdateEventTests : BaseIntegrationTest
     public async Task Update_ShouldThrowArgumentException_WhenOwnerIdIsInvalid()
     {
         //Arrange
-        var createInput = new CreateEventInput("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
+        var createInput = new CreateEventRequestDto("Event", "Event 1 description", "Street 2", DateTime.UtcNow.AddDays(2), 2);
         var createResult = await EventUseCase.Create(createInput);
 
-        var updateInput = new UpdateEventInput(createResult.Data!.Id, "Event Edited", "Event 1 description edited", "Street 2.2", DateTime.UtcNow.AddDays(10), 0);
+        var updateInput = new UpdateEventRequestDto(createResult.Data!.Id, "Event Edited", "Event 1 description edited", "Street 2.2", DateTime.UtcNow.AddDays(10), 0);
 
         // Act
         var act = async () => await EventUseCase.Update(updateInput);

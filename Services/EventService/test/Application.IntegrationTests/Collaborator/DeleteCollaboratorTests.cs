@@ -1,5 +1,5 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Collaborator.Inputs;
+using Domain.DTOs.Collaborator.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +14,7 @@ public class DeleteCollaboratorTests : BaseIntegrationTest
     public async Task Delete_ShouldRemoveCollaboratorFromDatabase_WhenCollaboratorExists()
     {
         // Arrange
-        var createInput = new CreateCollaboratorInput(10, "To Be Deleted");
+        var createInput = new CreateCollaboratorRequestDto(10, "To Be Deleted");
         var createResult = await CollaboratorUseCase.Create(createInput);
         var idToDelete = createResult.Data!.Id;
 

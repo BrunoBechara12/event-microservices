@@ -1,8 +1,8 @@
-﻿using Domain.Contracts.Event;
-using Domain.Contracts.Event.Inputs;
-using Domain.Contracts.Event.Outputs;
+﻿using Domain.DTOs.Event.Requests;
+using Domain.DTOs.Event.Responses;
+using Domain.Mappers;
 using Domain.Events;
-using Domain.Ports.In;
+using Domain.Ports.Input;
 using Domain.Ports.Output;
 using Result;
 using static Domain.Entities.Event;
@@ -19,47 +19,47 @@ public class EventUseCase : IEventUseCase
         _messagePublisher = messagePublisher;
     }
 
-    public async Task<Result<IEnumerable<DetailedEventOutput>>> Get()
+    public async Task<Result<IEnumerable<DetailedEventResponseDto>>> Get()
     {
         var events = await _eventRepository.Get();
 
-        var eventOutput = events.Select(e => e.ToDetailedEventOutput());
+        var eventOutput = events.Select(e => e.ToDetailedResponseDto());
 
         if(!eventOutput.Any())
         {
-            return Result<IEnumerable<DetailedEventOutput>>.Success(eventOutput, "No events found.");
+            return Result<IEnumerable<DetailedEventResponseDto>>.Success(eventOutput, "No events found.");
         }
 
-        return Result<IEnumerable<DetailedEventOutput>>.Success(eventOutput, "Events found with success!");
+        return Result<IEnumerable<DetailedEventResponseDto>>.Success(eventOutput, "Events found with success!");
     }
-    public async Task<Result<DetailedEventOutput>> GetById(int id)
+    public async Task<Result<DetailedEventResponseDto>> GetById(int id)
     {
         var eventItem = await _eventRepository.GetById(id);
 
-        var eventOutput = eventItem?.ToDetailedEventOutput();
+        var eventOutput = eventItem?.ToDetailedResponseDto();
 
         if (eventItem == null)
         {
-            return Result<DetailedEventOutput>.Success(eventOutput, "Event not found.");
+            return Result<DetailedEventResponseDto>.Success(eventOutput, "Event not found.");
         }
 
-        return Result<DetailedEventOutput>.Success(eventOutput, "Event found with success!");
+        return Result<DetailedEventResponseDto>.Success(eventOutput, "Event found with success!");
     }
-    public async Task<Result<IEnumerable<DetailedEventOutput>>> GetByUserId(int userId)
+    public async Task<Result<IEnumerable<DetailedEventResponseDto>>> GetByUserId(int userId)
     {
         var eventItems = await _eventRepository.GetByUserId(userId);
 
-        var eventOutput = eventItems.Select(e => e.ToDetailedEventOutput());
+        var eventOutput = eventItems.Select(e => e.ToDetailedResponseDto());
 
         if (!eventItems.Any())
         {
-            return Result<IEnumerable<DetailedEventOutput>>.Success(eventOutput, "No events found for this user.");
+            return Result<IEnumerable<DetailedEventResponseDto>>.Success(eventOutput, "No events found for this user.");
         }
 
-        return Result<IEnumerable<DetailedEventOutput>>.Success(eventOutput!, "Events found with success!"); 
+        return Result<IEnumerable<DetailedEventResponseDto>>.Success(eventOutput!, "Events found with success!"); 
     }
 
-    public async Task<Result<DefaultEventOutput>> Create(CreateEventInput input)
+    public async Task<Result<DefaultEventResponseDto>> Create(CreateEventRequestDto input)
     {
         var newEvent = CreateEvent( 
             input.Name, 
@@ -71,20 +71,20 @@ public class EventUseCase : IEventUseCase
 
         var createdEvent = await _eventRepository.Create(newEvent);
 
-        var eventOutput = createdEvent.ToDefaultEventOutput();
+        var eventOutput = createdEvent.ToDefaultResponseDto();
 
         await _messagePublisher.PublishAsync<EventCreated>(new EventCreated(eventOutput!.Id, eventOutput.Name), CancellationToken.None);
 
-        return Result<DefaultEventOutput>.Success(eventOutput, "Event created with success!");
+        return Result<DefaultEventResponseDto>.Success(eventOutput, "Event created with success!");
     }
 
-    public async Task<Result<DefaultEventOutput>> Update(UpdateEventInput updateEvent)
+    public async Task<Result<DefaultEventResponseDto>> Update(UpdateEventRequestDto updateEvent)
     {
         var eventItem = await _eventRepository.GetById(updateEvent.Id);
 
         if(eventItem == null)
         {
-            return Result<DefaultEventOutput>.Failure("Event not found.");
+            return Result<DefaultEventResponseDto>.Failure("Event not found.");
         }
 
         eventItem.UpdateEvent(
@@ -97,24 +97,24 @@ public class EventUseCase : IEventUseCase
 
         await _eventRepository.Update(eventItem);
 
-        var eventOutput = eventItem.ToDefaultEventOutput();
+        var eventOutput = eventItem.ToDefaultResponseDto();
 
-        return Result<DefaultEventOutput>.Success(eventOutput, "Event updated with success!");
+        return Result<DefaultEventResponseDto>.Success(eventOutput, "Event updated with success!");
     }
 
-    public async Task<Result<DefaultEventOutput>> Delete(int id)
+    public async Task<Result<DefaultEventResponseDto>> Delete(int id)
     {
         var eventItem = await _eventRepository.GetById(id);
 
         if(eventItem == null)
         {
-            return Result<DefaultEventOutput>.Failure("Event not found.");
+            return Result<DefaultEventResponseDto>.Failure("Event not found.");
         }
 
         await _eventRepository.Delete(eventItem);
 
         await _messagePublisher.PublishAsync<EventDeleted>(new EventDeleted(id), CancellationToken.None);
 
-        return Result<DefaultEventOutput>.Success(null, "Event deleted with success!");
+        return Result<DefaultEventResponseDto>.Success(null, "Event deleted with success!");
     }
 }

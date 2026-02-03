@@ -1,5 +1,5 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Collaborator.Inputs;
+using Domain.DTOs.Collaborator.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +14,11 @@ public class UpdateCollaboratorTests : BaseIntegrationTest
     public async Task Update_ShouldUpdate_WhenCollaboratorExists()
     {
         // Arrange
-        var createInput = new CreateCollaboratorInput(10, "Original Name");
+        var createInput = new CreateCollaboratorRequestDto(10, "Original Name");
         var createResult = await CollaboratorUseCase.Create(createInput);
         var collaboratorId = createResult.Data!.Id;
 
-        var updateInput = new UpdateCollaboratorInput(collaboratorId, 99, "Updated Name");
+        var updateInput = new UpdateCollaboratorRequestDto(collaboratorId, 99, "Updated Name");
 
         // Act
         var result = await CollaboratorUseCase.Update(updateInput);
@@ -42,7 +42,7 @@ public class UpdateCollaboratorTests : BaseIntegrationTest
     public async Task Update_ShouldReturnFailure_WhenCollaboratorDoesNotExist()
     {
         // Arrange
-        var updateInput = new UpdateCollaboratorInput(9999, 1, "Ghost");
+        var updateInput = new UpdateCollaboratorRequestDto(9999, 1, "Ghost");
 
         // Act
         var result = await CollaboratorUseCase.Update(updateInput);
@@ -59,11 +59,11 @@ public class UpdateCollaboratorTests : BaseIntegrationTest
     public async Task Update_ShouldThrowArgumentException_WhenNameIsTooShort()
     {
         // Arrange
-        var createInput = new CreateCollaboratorInput(1, "Valid Name");
+        var createInput = new CreateCollaboratorRequestDto(1, "Valid Name");
         var createResult = await CollaboratorUseCase.Create(createInput);
         var originalId = createResult.Data!.Id;
 
-        var updateInput = new UpdateCollaboratorInput(originalId, 1, "Jo");
+        var updateInput = new UpdateCollaboratorRequestDto(originalId, 1, "Jo");
 
         // Act
         var act = async () => await CollaboratorUseCase.Update(updateInput);
@@ -82,11 +82,11 @@ public class UpdateCollaboratorTests : BaseIntegrationTest
     public async Task Update_ShouldThrowArgumentException_WhenUserIdIsInvalid()
     {
         // Arrange
-        var createInput = new CreateCollaboratorInput(50, "Valid Name");
+        var createInput = new CreateCollaboratorRequestDto(50, "Valid Name");
         var createResult = await CollaboratorUseCase.Create(createInput);
         var originalId = createResult.Data!.Id;
 
-        var updateInput = new UpdateCollaboratorInput(originalId, 0, "Valid Name");
+        var updateInput = new UpdateCollaboratorRequestDto(originalId, 0, "Valid Name");
 
         // Act
         var act = async () => await CollaboratorUseCase.Update(updateInput);

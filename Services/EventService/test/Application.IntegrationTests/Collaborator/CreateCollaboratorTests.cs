@@ -1,5 +1,5 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Collaborator.Inputs;
+using Domain.DTOs.Collaborator.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +14,7 @@ public class CreateCollaboratorTests : BaseIntegrationTest
     public async Task Create_ShouldAddCollaboratorToDatabase_WhenDataIsValid()
     {
         // Arrange
-        var input = new CreateCollaboratorInput(123, "John Doe");
+        var input = new CreateCollaboratorRequestDto(123, "John Doe");
 
         // Act
         var result = await CollaboratorUseCase.Create(input);
@@ -38,7 +38,7 @@ public class CreateCollaboratorTests : BaseIntegrationTest
     public async Task Create_ShouldThrowArgumentException_WhenNameIsTooShort()
     {
         // Arrange
-        var input = new CreateCollaboratorInput(1, "Jo");
+        var input = new CreateCollaboratorRequestDto(1, "Jo");
 
         // Act
         var act = async () => await CollaboratorUseCase.Create(input);
@@ -56,7 +56,7 @@ public class CreateCollaboratorTests : BaseIntegrationTest
     public async Task Create_ShouldThrowArgumentException_WhenUserIdIsInvalid()
     {
         // Arrange
-        var input = new CreateCollaboratorInput(0, "John Doe");
+        var input = new CreateCollaboratorRequestDto(0, "John Doe");
 
         // Act
         var act = async () => await CollaboratorUseCase.Create(input);

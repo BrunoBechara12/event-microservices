@@ -1,25 +1,25 @@
-using Domain.Contracts.Event.Outputs;
+using Domain.DTOs.Event.Responses;
 using EventEntity = Domain.Entities.Event;
 
-namespace Domain.Contracts.Event;
+namespace Domain.Mappers;
 
-public static class EventExtensions
+public static class EventMapper
 {
-    public static DefaultEventOutput? ToDefaultEventOutput(this EventEntity entity)
+    public static DefaultEventResponseDto? ToDefaultResponseDto(this EventEntity entity)
     {
         if (entity == null) return null;
 
-        return new DefaultEventOutput(
+        return new DefaultEventResponseDto(
             entity.Id,
             entity.Name
         );
     }
 
-    public static DetailedEventOutput? ToDetailedEventOutput(this EventEntity entity)
+    public static DetailedEventResponseDto? ToDetailedResponseDto(this EventEntity entity)
     {
         if (entity == null) return null;
 
-        return new DetailedEventOutput(
+        return new DetailedEventResponseDto(
             entity.Id,
             entity.Name,
             entity.Description,

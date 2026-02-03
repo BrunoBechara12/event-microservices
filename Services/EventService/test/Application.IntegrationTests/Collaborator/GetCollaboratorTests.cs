@@ -1,6 +1,6 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Collaborator.Inputs;
-using Domain.Contracts.Event.Inputs;
+using Domain.DTOs.Collaborator.Requests;
+using Domain.DTOs.Event.Requests;
 using FluentAssertions;
 
 namespace Tests.Collaborator;
@@ -14,7 +14,7 @@ public class GetCollaboratorTests : BaseIntegrationTest
     public async Task GetById_ShouldReturnCollaborator_WhenExists()
     {
         // Arrange
-        var createResult = await CollaboratorUseCase.Create(new CreateCollaboratorInput(1, "Jane Doe"));
+        var createResult = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(1, "Jane Doe"));
         var id = createResult.Data!.Id;
 
         // Act
@@ -43,16 +43,16 @@ public class GetCollaboratorTests : BaseIntegrationTest
     public async Task GetByEventId_ShouldReturnCollaborators_WhenLinkedToEvent()
     {
         // Arrange
-        var eventInput = new CreateEventInput("Tech Conf", "Desc", "Street", DateTime.UtcNow.AddDays(10), 1);
+        var eventInput = new CreateEventRequestDto("Tech Conf", "Desc", "Street", DateTime.UtcNow.AddDays(10), 1);
         var eventResult = await EventUseCase.Create(eventInput);
         var eventId = eventResult.Data!.Id;
 
-        var collab1Result = await CollaboratorUseCase.Create(new CreateCollaboratorInput(1, "Collab A"));
-        var collab2Result = await CollaboratorUseCase.Create(new CreateCollaboratorInput(2, "Collab B"));
-        var collabOtherResult = await CollaboratorUseCase.Create(new CreateCollaboratorInput(3, "Collab C (Not Linked)"));
+        var collab1Result = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(1, "Collab A"));
+        var collab2Result = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(2, "Collab B"));
+        var collabOtherResult = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(3, "Collab C (Not Linked)"));
 
-        await CollaboratorUseCase.AddToEvent(new AddCollaboratorToEventInput(collab1Result.Data!.Id, eventId, 0));
-        await CollaboratorUseCase.AddToEvent(new AddCollaboratorToEventInput(collab2Result.Data!.Id, eventId, 0));
+        await CollaboratorUseCase.AddToEvent(new AddCollaboratorToEventRequestDto(collab1Result.Data!.Id, eventId, 0));
+        await CollaboratorUseCase.AddToEvent(new AddCollaboratorToEventRequestDto(collab2Result.Data!.Id, eventId, 0));
 
         // Act
         var result = await CollaboratorUseCase.GetByEventId(eventId);

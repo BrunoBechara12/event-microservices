@@ -1,5 +1,5 @@
-﻿using Domain.Contracts.Collaborator.Inputs;
-using Domain.Ports.In;
+﻿using Domain.DTOs.Collaborator.Requests;
+using Domain.Ports.Input;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Adapters.Primary.API.Controllers;
@@ -50,7 +50,7 @@ public class CollaboratorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateCollaboratorInput input)
+    public async Task<IActionResult> Create(CreateCollaboratorRequestDto input)
     {
         var collaborator = await _collaboratorUseCase.Create(input);
 
@@ -67,7 +67,7 @@ public class CollaboratorController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateCollaboratorInput input)
+    public async Task<IActionResult> Update(UpdateCollaboratorRequestDto input)
     {
         var collaborator = await _collaboratorUseCase.Update(input);
 
@@ -101,7 +101,7 @@ public class CollaboratorController : ControllerBase
     }
 
     [HttpPost("AddToEvent")]
-    public async Task<IActionResult> AddToEvent(AddCollaboratorToEventInput input)
+    public async Task<IActionResult> AddToEvent(AddCollaboratorToEventRequestDto input)
     {
         var collaborator = await _collaboratorUseCase.AddToEvent(input);
 
@@ -118,7 +118,7 @@ public class CollaboratorController : ControllerBase
     }
 
     [HttpDelete("RemoveFromEvent")]
-    public async Task<IActionResult> RemoveFromEvent(RemoveCollaboratorFromEventInput input)
+    public async Task<IActionResult> RemoveFromEvent(RemoveCollaboratorFromEventRequestDto input)
     {
         var collaborator = await _collaboratorUseCase.RemoveFromEvent(input);
 

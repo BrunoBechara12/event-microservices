@@ -1,6 +1,6 @@
 ﻿using Application.IntegrationTests;
-using Domain.Contracts.Collaborator.Inputs;
-using Domain.Contracts.Event.Inputs;
+using Domain.DTOs.Collaborator.Requests;
+using Domain.DTOs.Event.Requests;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using static Domain.Entities.EventCollaborator;
@@ -16,10 +16,10 @@ public class EventCollaboratorTests : BaseIntegrationTest
     public async Task AddToEvent_ShouldLinkCollaborator_WhenDataIsValid()
     {
         // Arrange
-        var eventResult = await EventUseCase.Create(new CreateEventInput("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
-        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorInput(1, "John"));
+        var eventResult = await EventUseCase.Create(new CreateEventRequestDto("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
+        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(1, "John"));
 
-        var input = new AddCollaboratorToEventInput(eventResult.Data!.Id, collabResult.Data!.Id, 0);
+        var input = new AddCollaboratorToEventRequestDto(eventResult.Data!.Id, collabResult.Data!.Id, 0);
 
         // Act
         var result = await CollaboratorUseCase.AddToEvent(input);
@@ -39,9 +39,9 @@ public class EventCollaboratorTests : BaseIntegrationTest
     public async Task AddToEvent_ShouldReturnFailure_WhenAlreadyLinked()
     {
         // Arrange
-        var eventResult = await EventUseCase.Create(new CreateEventInput("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
-        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorInput(1, "John"));
-        var input = new AddCollaboratorToEventInput(collabResult.Data!.Id, eventResult.Data!.Id, CollaboratorRole.Inviter);
+        var eventResult = await EventUseCase.Create(new CreateEventRequestDto("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
+        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(1, "John"));
+        var input = new AddCollaboratorToEventRequestDto(collabResult.Data!.Id, eventResult.Data!.Id, CollaboratorRole.Inviter);
 
         // Act 
         await CollaboratorUseCase.AddToEvent(input);
@@ -57,10 +57,10 @@ public class EventCollaboratorTests : BaseIntegrationTest
     public async Task AddToEvent_ShouldReturnFailure_WhenEventDoesNotExist()
     {
         // Arrange
-        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorInput(1, "John"));
+        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(1, "John"));
         var fakeEventId = 9999;
 
-        var input = new AddCollaboratorToEventInput(collabResult.Data!.Id, fakeEventId, CollaboratorRole.Inviter);
+        var input = new AddCollaboratorToEventRequestDto(collabResult.Data!.Id, fakeEventId, CollaboratorRole.Inviter);
 
         // Act
         var result = await CollaboratorUseCase.AddToEvent(input);
@@ -74,10 +74,10 @@ public class EventCollaboratorTests : BaseIntegrationTest
     public async Task AddToEvent_ShouldReturnFailure_WhenCollaboratorDoesNotExist()
     {
         // Arrange
-        var eventResult = await EventUseCase.Create(new CreateEventInput("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
+        var eventResult = await EventUseCase.Create(new CreateEventRequestDto("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
         var fakeCollabId = 9999;
 
-        var input = new AddCollaboratorToEventInput(eventResult.Data!.Id, fakeCollabId, CollaboratorRole.Adm);
+        var input = new AddCollaboratorToEventRequestDto(eventResult.Data!.Id, fakeCollabId, CollaboratorRole.Adm);
 
         // Act
         var result = await CollaboratorUseCase.AddToEvent(input);
@@ -91,12 +91,12 @@ public class EventCollaboratorTests : BaseIntegrationTest
     public async Task RemoveFromEvent_ShouldUnlinkCollaborator_WhenLinked()
     {
         // Arrange
-        var eventResult = await EventUseCase.Create(new CreateEventInput("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 4));
-        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorInput(1, "John"));
+        var eventResult = await EventUseCase.Create(new CreateEventRequestDto("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 4));
+        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(1, "John"));
 
-        await CollaboratorUseCase.AddToEvent(new AddCollaboratorToEventInput(collabResult.Data!.Id, eventResult.Data!.Id, CollaboratorRole.Inviter));
+        await CollaboratorUseCase.AddToEvent(new AddCollaboratorToEventRequestDto(collabResult.Data!.Id, eventResult.Data!.Id, CollaboratorRole.Inviter));
 
-        var removeInput = new RemoveCollaboratorFromEventInput(collabResult.Data.Id, eventResult.Data.Id);
+        var removeInput = new RemoveCollaboratorFromEventRequestDto(collabResult.Data.Id, eventResult.Data.Id);
 
         // Act
         var result = await CollaboratorUseCase.RemoveFromEvent(removeInput);
@@ -115,10 +115,10 @@ public class EventCollaboratorTests : BaseIntegrationTest
     public async Task RemoveFromEvent_ShouldReturnFailure_WhenNotLinked()
     {
         // Arrange
-        var eventResult = await EventUseCase.Create(new CreateEventInput("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
-        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorInput(1, "John"));
+        var eventResult = await EventUseCase.Create(new CreateEventRequestDto("Event", "Desc", "St", DateTime.UtcNow.AddDays(5), 1));
+        var collabResult = await CollaboratorUseCase.Create(new CreateCollaboratorRequestDto(1, "John"));
 
-        var removeInput = new RemoveCollaboratorFromEventInput(collabResult.Data!.Id, eventResult.Data!.Id);
+        var removeInput = new RemoveCollaboratorFromEventRequestDto(collabResult.Data!.Id, eventResult.Data!.Id);
 
         // Act 
         var result = await CollaboratorUseCase.RemoveFromEvent(removeInput);

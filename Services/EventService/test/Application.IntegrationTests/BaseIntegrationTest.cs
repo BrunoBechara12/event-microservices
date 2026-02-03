@@ -1,5 +1,5 @@
 ﻿using Adapters.Secondary.Context;
-using Domain.Ports.In;
+using Domain.Ports.Input;
 using Domain.Ports.Output;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,10 +11,12 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestFactory
     protected readonly IEventUseCase EventUseCase;
     protected readonly ICollaboratorRepository CollaboratorRepository;
     protected readonly ICollaboratorUseCase CollaboratorUseCase;
-    protected readonly EventDbContext DbContext; 
+    protected readonly EventDbContext DbContext;
+    protected readonly IntegrationTestFactory Factory;
 
     protected BaseIntegrationTest(IntegrationTestFactory factory)
     {
+        Factory = factory;
         _scope = factory.Services.CreateScope();
 
         factory.ResetDatabaseAsync().GetAwaiter().GetResult();
@@ -25,6 +27,6 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestFactory
         CollaboratorRepository = _scope.ServiceProvider.GetRequiredService<ICollaboratorRepository>();
         CollaboratorUseCase = _scope.ServiceProvider.GetRequiredService<ICollaboratorUseCase>();
 
-        DbContext = _scope.ServiceProvider.GetRequiredService<EventDbContext>(); 
+        DbContext = _scope.ServiceProvider.GetRequiredService<EventDbContext>();
     }
 }

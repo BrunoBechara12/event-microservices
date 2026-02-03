@@ -1,7 +1,7 @@
 using static Domain.Entities.EventCollaborator;
 
-namespace Domain.Contracts.Collaborator.Inputs;
-public record AddCollaboratorToEventInput
+namespace Domain.DTOs.Collaborator.Requests;
+public record AddCollaboratorToEventRequestDto
 (
     int CollaboratorId,
     int EventId,

@@ -1,5 +1,5 @@
-namespace Domain.Contracts.Event.Outputs;
-public record DetailedEventOutput
+namespace Domain.DTOs.Event.Responses;
+public record DetailedEventResponseDto
 (
     int Id,
     string Name,
