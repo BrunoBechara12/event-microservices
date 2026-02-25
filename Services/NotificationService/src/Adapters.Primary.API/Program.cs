@@ -1,0 +1,54 @@
+using Adapters.Primary.API.Extensions;
+using Adapters.Primary.API.Middlewares;
+using Adapters.Secondary;
+using Adapters.Secondary.Context;
+using Application;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+// Add services to the container.
+
+builder.Services.AddDbContext<NotificationDbContext>(
+    options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDataBaseService(builder.Configuration);
+builder.Services.AddNotificationUseCase();
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddRabbitMQService(builder.Configuration);
+
+var app = builder.Build();
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "EventMicroservices v1");
+    options.ConfigObject.AdditionalItems["operationsSorter"] = "method";
+    options.DefaultModelsExpandDepth(-1);
+});
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.DefaultModelsExpandDepth(-1));
+    app.ApplyMigrations();
+}
+
+//app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
+public partial class Program { }
