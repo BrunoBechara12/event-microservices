@@ -18,9 +18,6 @@ builder.Services.AddDataBaseService(builder.Configuration);
 builder.Services.AddGuestUseCase();
 
 builder.Services.AddControllers();
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -31,8 +28,8 @@ var app = builder.Build();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "EventMicroservices v1");
-
     options.ConfigObject.AdditionalItems["operationsSorter"] = "method";
+    options.DefaultModelsExpandDepth(-1);
 });
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -41,7 +38,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.DefaultModelsExpandDepth(-1));
     app.ApplyMigrations();
 }
 
