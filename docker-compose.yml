@@ -21,7 +21,6 @@ services:
       dockerfile: Services/EventService/src/Adapters.Primary.API/Dockerfile
     ports:
       - "5000:5000"
-      - "5001:5001"
     depends_on:
       - events.database
       - rabbitmq
@@ -45,10 +44,10 @@ services:
       context: ./
       dockerfile: Services/GuestService/src/Adapters.Primary.API/Dockerfile
     ports:
-      - "5002:5000"
-      - "5003:5001"
+      - "5001:5000"
     depends_on:
       - guests.database
+      - rabbitmq
 
   notifications.database:
     image: postgres:15-alpine
@@ -69,35 +68,36 @@ services:
       context: ./
       dockerfile: Services/NotificationService/src/Adapters.Primary.API/Dockerfile
     ports:
-      - "5004:5000"
-      - "5005:5001"
+      - "5002:5000"
     environment:
-      - ConnectionStrings__NotificationDb=Host=notifications.database;Port=5432;Database=notifications;Username=postgres;Password=postgres
-      - RabbitMQ__Host=rabbitmq
-      - RabbitMQ__Port=5672
-      - RabbitMQ__Username=guest
-      - RabbitMQ__Password=guest
-      - EvolutionApi__BaseUrl=http://evolution-api:8080
-      - EvolutionApi__ApiKey=${EVOLUTION_API_KEY:-your-api-key}
-      - EvolutionApi__InstanceName=${EVOLUTION_INSTANCE:-default}
+      - EvolutionApi__ApiKey=${EVOLUTION_API_KEY}
+      - EvolutionApi__InstanceName=${EVOLUTION_INSTANCE_NAME}
     depends_on:
       - notifications.database
       - rabbitmq
 
   evolution-api:
-    image: atendai/evolution-api:latest
-    container_name: evolution-api
-    environment:
-      - SERVER_URL=http://evolution-api:8080
-      - AUTHENTICATION_API_KEY=${EVOLUTION_API_KEY:-your-api-key}
-      - DATABASE_ENABLED=true
-      - DATABASE_PROVIDER=postgresql
-      - DATABASE_CONNECTION_URI=postgresql://postgres:postgres@evolution.database:5432/evolution
-      - REDIS_ENABLED=false
+    container_name: evolution_api
+    image: atendai/evolution-api:v2.2.2
+    restart: always
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - evolution.database
+      - evolution-redis
+    environment:
+      - SERVER_URL=http://localhost:8081
+      - CONFIG_SESSION_PHONE_VERSION=2.3000.1033062290
+      - AUTHENTICATION_API_KEY=${EVOLUTION_API_KEY}
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://postgres:postgres@evolution.database:5432/evolution
+      - DATABASE_CLIENT_NAME=evolution_exchange
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_URI=redis://evolution-redis:6379/0
+      - CACHE_REDIS_PREFIX="evolution:"
+      - CACHE_REDIS_SAVE_INSTANCES=true
+    volumes:
+      - evolution_instances:/evolution/instances
 
   evolution.database:
     image: postgres:15-alpine
@@ -111,6 +111,15 @@ services:
     ports:
        - "5435:5432"
 
+  evolution-redis:
+    image: redis:alpine
+    container_name: evolution_redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - evolution_redis_data:/data
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: event-rabbit
@@ -118,4 +127,32 @@ services:
       - "5672:5672"
       - "15672:15672"
 
+  gateway.database:
+    image: postgres:15-alpine
+    container_name: gateway.database
+    environment:
+      - POSTGRES_DB=gateway
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+       - ./.containers/gateway-db:/var/lib/postgresql/data
+    ports:
+       - "5436:5432"
 
+  gateway.api:
+    image: ${DOCKER_REGISTRY-}gatewayapi
+    container_name: gateway.api
+    build:
+      context: ./
+      dockerfile: Services/ApiGateway/Dockerfile
+    ports:
+      - "5010:5010"
+    depends_on:
+      - gateway.database
+      - events.api
+      - guests.api
+      - notifications.api
+
+volumes:
+  evolution_instances:
+  evolution_redis_data:

@@ -5,24 +5,42 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=5000
-      - ASPNETCORE_HTTP_PORTS=5001
-    ports:
-      - "5000:5000"
-      - "5001:5001"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ConnectionStrings__DefaultConnection=Host=events.database;Port=5432;Database=events;Username=postgres;Password=postgres;
+      - RabbitMQ__Host=amqp://rabbitmq:5672
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
 
   guests.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=5000
-      - ASPNETCORE_HTTP_PORTS=5001
-    ports:
-      - "5002:5000"
-      - "5003:5001"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ConnectionStrings__DefaultConnection=Host=guests.database;Port=5432;Database=guests;Username=postgres;Password=postgres;
+      - RabbitMQ__Host=amqp://rabbitmq:5672
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+
+  notifications.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+      - ConnectionStrings__NotificationDb=Host=notifications.database;Port=5432;Database=notifications;Username=postgres;Password=postgres
+      - RabbitMQ__Host=amqp://rabbitmq:5672
+      - RabbitMQ__Port=5672
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+      - EvolutionApi__BaseUrl=http://evolution-api:8080
+      - EvolutionApi__ApiKey=5w6DT85H
+
+  gateway.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5010
+      - ConnectionStrings__GatewayDb=Host=gateway.database;Port=5432;Database=gateway;Username=postgres;Password=postgres;
+      - Jwt__SecretKey=super-secret-key-for-jwt-token-generation-min-32-chars!
+      - Jwt__Issuer=EventMicroservices.Gateway
+      - Jwt__Audience=EventMicroservices
+      - Jwt__AccessTokenExpirationMinutes=60
+      - Jwt__RefreshTokenExpirationDays=7
+      - ReverseProxy__Clusters__event-service__Destinations__destination1__Address=http://events.api:5000
+      - ReverseProxy__Clusters__guest-service__Destinations__destination1__Address=http://guests.api:5000
+      - ReverseProxy__Clusters__notification-service__Destinations__destination1__Address=http://notifications.api:5000
