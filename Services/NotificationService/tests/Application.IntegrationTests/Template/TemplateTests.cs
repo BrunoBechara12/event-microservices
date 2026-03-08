@@ -2,16 +2,31 @@ using Domain.DTOs.Template.Requests;
 using Domain.Entities;
 using FluentAssertions;
 using Xunit;
+using Application.IntegrationTests;
 
-namespace Application.IntegrationTests.Template;
+namespace Tests.Template;
 
 public class TemplateTests : BaseIntegrationTest
 {
     public TemplateTests(IntegrationTestFactory factory) : base(factory) { }
 
     [Fact]
-    public async Task GetAll_ShouldReturnDefaultTemplates()
+    public async Task GetAll_ShouldReturnAllCreatedTemplates()
     {
+        // Arrange
+        var templates = new[]
+        {
+            new CreateTemplateRequestDto("Event Invitation", NotificationType.EventInvitation, "You are invited to {eventName}!"),
+            new CreateTemplateRequestDto("Event Reminder", NotificationType.EventReminder, "Reminder: {eventName} is coming!"),
+            new CreateTemplateRequestDto("Invite Confirmation", NotificationType.InviteConfirmation, "Thanks {guestName}, you're confirmed!")
+        };
+
+        foreach (var input in templates)
+        {
+            var createResult = await TemplateUseCase.Create(input);
+            createResult.RequestSuccess.Should().BeTrue();
+        }
+
         // Act
         var result = await TemplateUseCase.GetAll();
 
@@ -21,6 +36,41 @@ public class TemplateTests : BaseIntegrationTest
         result.Data.Should().Contain(t => t.Type == "EventInvitation");
         result.Data.Should().Contain(t => t.Type == "EventReminder");
         result.Data.Should().Contain(t => t.Type == "InviteConfirmation");
+    }
+
+    [Fact]
+    public async Task GetById_ShouldReturnTemplate_WhenExists()
+    {
+        // Arrange
+        var input = new CreateTemplateRequestDto(
+            "Template to Find",
+            NotificationType.Custom,
+            "Hello {name}!"
+        );
+        var createResult = await TemplateUseCase.Create(input);
+        createResult.RequestSuccess.Should().BeTrue();
+        var templateId = createResult.Data!.Id;
+
+        // Act
+        var result = await TemplateUseCase.GetById(templateId);
+
+        // Assert
+        result.RequestSuccess.Should().BeTrue();
+        result.Data.Should().NotBeNull();
+        result.Data!.Id.Should().Be(templateId);
+        result.Data.Name.Should().Be("Template to Find");
+        result.Data.Type.Should().Be("Custom");
+    }
+
+    [Fact]
+    public async Task GetById_ShouldReturnFailure_WhenNotExists()
+    {
+        // Act
+        var result = await TemplateUseCase.GetById(99999);
+
+        // Assert
+        result.RequestSuccess.Should().BeFalse();
+        result.Message.Should().Contain("not found");
     }
 
     [Fact]
@@ -92,16 +142,5 @@ public class TemplateTests : BaseIntegrationTest
         deleteResult.RequestSuccess.Should().BeTrue();
         getResult.RequestSuccess.Should().BeFalse();
         getResult.Message.Should().Contain("not found");
-    }
-
-    [Fact]
-    public async Task GetById_ShouldReturnFailure_WhenNotExists()
-    {
-        // Act
-        var result = await TemplateUseCase.GetById(99999);
-
-        // Assert
-        result.RequestSuccess.Should().BeFalse();
-        result.Message.Should().Contain("not found");
     }
 }

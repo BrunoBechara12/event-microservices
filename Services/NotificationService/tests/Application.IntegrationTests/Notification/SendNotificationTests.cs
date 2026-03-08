@@ -4,8 +4,9 @@ using Domain.Ports.Output;
 using FluentAssertions;
 using Moq;
 using Xunit;
+using Application.IntegrationTests;
 
-namespace Application.IntegrationTests.Notification;
+namespace Tests.Notification;
 
 public class SendNotificationTests : BaseIntegrationTest
 {

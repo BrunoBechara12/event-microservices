@@ -3,7 +3,9 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace Application.IntegrationTests.Notification;
+using Application.IntegrationTests;
+
+namespace Tests.Notification;
 
 public class WhatsAppStatusTests : BaseIntegrationTest
 {
